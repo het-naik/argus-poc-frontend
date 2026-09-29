@@ -1,0 +1,63 @@
+<p>cart works!</p>
+{{cart()?.cartId}}
+{{cart()?.customerId}}
+<h2 style="margin: 16px 0;">Orders</h2>
+
+<div style="overflow-x: auto;">
+  <table mat-table [dataSource]="cart()?.cartItems || []" class="mat-elevation-z2" style="width: 100%;">
+
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef>Product name</th>
+      <td mat-cell *matCellDef="let item">
+        <a 
+           style="color: #1976d2; text-decoration: none; font-weight: 500;">
+          {{ item.product?.name }}
+        </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="pricePerUnit">
+      <th mat-header-cell *matHeaderCellDef>Price</th>
+      <td mat-cell *matCellDef="let item">{{ item.product?.pricePerUnit }}</td>
+    </ng-container>
+
+   <ng-container matColumnDef="quantity">
+  <th mat-header-cell *matHeaderCellDef>Quantity</th>
+  <td mat-cell *matCellDef="let item">
+    <div style="display: flex; align-items: center; gap: 4px;">
+      <button mat-icon-button
+              (click)="decrement(item)"
+              [disabled]="item.quantity <= 1"
+              aria-label="Decrease quantity">
+        <mat-icon>remove</mat-icon>
+      </button>
+
+      <span style="min-width: 24px; text-align: center;">{{ item.quantity }}</span>
+
+      <button mat-icon-button
+              (click)="increment(item)"
+              aria-label="Increase quantity">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </td>
+</ng-container>
+
+      <ng-container matColumnDef="subtotal">
+      <th mat-header-cell *matHeaderCellDef>Subtotal</th>
+      <td mat-cell *matCellDef="let item">{{ (item.quantity*item.product?.pricePerUnit)}}</td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell"
+          [attr.colspan]="displayedColumns.length"
+          style="text-align: center; padding: 24px; color: #777;">
+        No orders found.
+      </td>
+    </tr> 
+  </table>
+</div>
