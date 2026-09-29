@@ -1,10 +1,14 @@
 <!-- Search Bar -->
-<mat-toolbar color="primary" class="toolbar">
+<mat-toolbar color="primary" class="searchbar">
 
   <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
     <mat-icon matPrefix>search</mat-icon>
     <input matInput type="search" placeholder="Search products" [(ngModel)]="searchTerm" name="search"/>
   </mat-form-field>
+
+  <button class="cart-button">
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
 
 </mat-toolbar>
 
@@ -93,6 +97,11 @@
             </div>
             <span class="product-price">Rs. {{ product.price}}</span>
           </mat-card-content>
+          
+          <mat-card-actions class="product-actions">
+              <button mat-stroked-button color="primary" (click)="viewDetails(product)">View Details</button>
+              <button mat-flat-button color="primary" (click)="addToCart(product)">Add to Cart</button>
+          </mat-card-actions>
         </mat-card>
       </div>
 
