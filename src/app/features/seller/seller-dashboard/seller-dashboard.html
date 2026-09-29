@@ -1,1 +1,114 @@
-<h1>egegheagh</h1>
+<div class="flex flex-col justify-center w-full">
+  <!-- Profile Section -->
+  <div
+    class="w-full mx-auto flex justify-between items-center bg-white rounded-2xl p-5 transition-shadow duration-300"
+  >
+    <div class="flex items-center gap-4">
+      <div
+        class="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-semibold text-lg border border-indigo-100"
+      >
+        U
+      </div>
+
+      <div class="flex flex-col items-start">
+        <div class="text-slate-800 font-semibold text-base tracking-tight">Username</div>
+        <div class="text-slate-400 text-sm font-medium">emailid@gmail.com</div>
+      </div>
+    </div>
+
+    <!-- Right Side: Action Button -->
+    <div>
+      <button
+        matButton="outlined"
+        class="px-4 py-2 text-sm font-semibold text-indigo-600 bg-white hover:bg-indigo-50 border border-indigo-200 hover:border-indigo-300 rounded-xl transition-colors duration-200 cursor-pointer shadow-xs"
+      >
+        Edit Profile
+      </button>
+    </div>
+  </div>
+
+  <!-- table -->
+  <div class="m-8">
+    <mat-form-field appearance="outline">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. headphones" #input />
+    </mat-form-field>
+
+    <div class="mat-elevation-z2 table-container">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="productImageUrl">
+          <th mat-header-cell *matHeaderCellDef>Image</th>
+          <td mat-cell *matCellDef="let row" class="m-2">
+            <img class="thumb" [src]="row.productImageUrl" [alt]="row.description" />
+          </td>
+        </ng-container>
+        
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+        </ng-container>
+
+        <!-- Description Column -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+          <td mat-cell *matCellDef="let row">{{ row.description }}</td>
+        </ng-container>
+
+        <!-- Category Column -->
+        <ng-container matColumnDef="categoryType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let row">{{  formatCategory(CategoryType[row.categoryType])  }}</td>
+        </ng-container>
+
+        <!-- Price Column -->
+        <ng-container matColumnDef="pricePerUnit">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.pricePerUnit | currency: 'INR' : 'symbol' : '1.0-2' }}
+          </td>
+        </ng-container>
+
+        <!-- Stock Column -->
+        <ng-container matColumnDef="stock">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+          <td mat-cell *matCellDef="let row" [class.low-stock]="row.stock < 50">
+            {{ row.stock }}
+          </td>
+        </ng-container>
+
+        <!-- Created Column -->
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Created</th>
+          <td mat-cell *matCellDef="let row">{{ row.createdAt | date: 'mediumDate' }}</td>
+        </ng-container>
+
+        <!-- Updated Column -->
+        <ng-container matColumnDef="updatedAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Updated</th>
+          <td mat-cell *matCellDef="let row">{{ row.updatedAt | date: 'medium' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          class="clickable-row"
+          tabindex="0"
+          (click)="openEditDialog(row)"
+          (keydown.enter)="openEditDialog(row)"
+        ></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="7">No products matching "{{ input.value }}"</td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page of products"
+      ></mat-paginator>
+    </div>
+  </div>
+</div>

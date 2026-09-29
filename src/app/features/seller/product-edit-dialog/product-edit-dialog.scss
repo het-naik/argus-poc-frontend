@@ -1,0 +1,19 @@
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 420px;
+}
+.row {
+  display: flex;
+  gap: 12px;
+}
+.row mat-form-field {
+  flex: 1;
+}
+.product-id {
+  margin: 0 0 12px;
+  font-size: 12px;
+  opacity: 0.6;
+  word-break: break-all;
+}

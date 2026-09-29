@@ -1,0 +1,74 @@
+<h2 mat-dialog-title>Edit product</h2>
+
+<form [formGroup]="form" (ngSubmit)="save()">
+  <mat-dialog-content class="form-grid">
+    <p class="product-id">ID: {{ product.productId }}</p>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Product name</mat-label>
+      <input matInput formControlName="name" />
+      @if (form.controls.name.hasError('required')) {
+        <mat-error>Product name is required</mat-error>
+      } @else if (form.controls.name.hasError('maxlength')) {
+        <mat-error>Maximum 100 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput rows="3" formControlName="description"></textarea>
+      @if (form.controls.description.hasError('required')) {
+        <mat-error>Description is required</mat-error>
+      } @else if (form.controls.description.hasError('maxlength')) {
+        <mat-error>Maximum 200 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="categoryType">
+        @for (c of categories; track c.value) {
+          <mat-option [value]="c.value">{{ c.label }}</mat-option>
+        }
+      </mat-select>
+      <mat-error>Category is required</mat-error>
+    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Price per unit</mat-label>
+        <input matInput type="number" min="0" formControlName="pricePerUnit" />
+        @if (form.controls.pricePerUnit.hasError('required')) {
+          <mat-error>Price is required</mat-error>
+        } @else if (form.controls.pricePerUnit.hasError('min')) {
+          <mat-error>Price can't be negative</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Stock</mat-label>
+        <input matInput type="number" min="0" step="1" formControlName="stock" />
+        @if (form.controls.stock.hasError('required')) {
+          <mat-error>Stock is required</mat-error>
+        } @else if (
+          form.controls.stock.hasError('min') || form.controls.stock.hasError('pattern')
+        ) {
+          <mat-error>Enter a whole number, 0 or more</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Image URL</mat-label>
+      <input matInput type="url" formControlName="productImageUrl" />
+      <mat-error>Image URL is required</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" mat-dialog-close [disabled]="saving()">Cancel</button>
+    <button mat-flat-button type="submit" [disabled]="saving()">
+      {{ saving() ? 'Saving…' : 'Save' }}
+    </button>
+  </mat-dialog-actions>
+</form>
