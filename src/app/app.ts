@@ -1,8 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SellerDashboard } from './features/seller/seller-dashboard/seller-dashboard';
+import { Productbrowsing } from './features/products/productbrowsing/productbrowsing';
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Productbrowsing, SellerDashboard],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
@@ -10,3 +12,4 @@ import { RouterOutlet } from '@angular/router';
 export class App {
   protected readonly title = signal('frontend');
 }
+

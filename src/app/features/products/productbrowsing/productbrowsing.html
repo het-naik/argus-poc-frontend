@@ -1,0 +1,113 @@
+<!-- Search Bar -->
+<mat-toolbar color="primary" class="toolbar">
+
+  <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput type="search" placeholder="Search products" [(ngModel)]="searchTerm" name="search"/>
+  </mat-form-field>
+
+</mat-toolbar>
+
+
+<!-- Main content -->
+<div class="page">
+
+  <div class="layout">
+
+    <!-- Filters sidebar -->
+    <div class="sidebar">
+
+      <div class="sidebar-header">
+        <span class="sidebar-title">Filters</span>
+        <button mat-button color="primary" (click)="resetFilters()">Reset</button>
+      </div>
+
+      <!-- Sort By -->
+      <div class="filter-block">
+        <span class="filter-title">Sort By</span>
+        <mat-radio-group class="filter-options" [(ngModel)]="selectedSort">
+          <mat-radio-button *ngFor="let option of sortOptions" [value]="option.value">
+            {{ option.label }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Category -->
+      <div class="filter-block">
+        <span class="filter-title">Category</span>
+        <div class="filter-options">
+          <mat-checkbox *ngFor="let category of categories" [(ngModel)]="category.checked">
+            {{ category.label }}
+          </mat-checkbox>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Price Range -->
+      <div class="filter-block">
+        <span class="filter-title">Price Range</span>
+
+        <div class="price-inputs">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <input matInput type="number" [(ngModel)]="minPrice" name="minPrice" />
+          </mat-form-field>
+
+          <span class="price-separator">&ndash;</span>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <input matInput type="number" [(ngModel)]="maxPrice" name="maxPrice" />
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Availability -->
+      <div class="filter-block">
+        <span class="filter-title">Availability</span>
+        <div class="filter-options">
+          <mat-checkbox [(ngModel)]="inStockOnly">In Stock</mat-checkbox>
+          <mat-checkbox [(ngModel)]="preOrderOnly">Pre-order</mat-checkbox>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Product grid -->
+    <section class="results">
+
+      <div class="product-grid">
+        <mat-card *ngFor="let product of products" class="product-card">
+          <div class="product-image">
+            <img [src]="product.imageUrl" [alt]="product.name" />
+          </div>
+
+          <mat-card-content class="product-info">
+            <div>
+              <h2 class="product-name">{{ product.name }}</h2>
+              <p class="product-description">{{ product.description }}</p>
+            </div>
+            <span class="product-price">Rs. {{ product.price}}</span>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <mat-paginator
+        class="paginator"
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[20, 50, 100]"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)"
+        showFirstLastButtons
+      >
+      </mat-paginator>
+
+    </section>
+
+  </div>
+</div>

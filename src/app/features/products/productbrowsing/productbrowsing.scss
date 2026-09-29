@@ -1,0 +1,197 @@
+// Colors for controls (radio, checkbox, slider, paginator, buttons)
+// come from the Angular Material azure-blue theme automatically.
+// Nothing here overrides theme colors.
+
+$max-width: 1280px;
+$border-color: #e2e2e2;
+$muted-text: #5e5e5e;
+$surface: #f9f9f9;
+$surface-white: #ffffff;
+
+:host {
+  display: block;
+  background: $surface;
+}
+
+// Search Bar
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  position: sticky;
+  top: 0px;
+  z-index: 50;
+}
+
+.search-field {
+  flex: 1;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+// Page wrapper
+.page {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+}
+
+
+// Layout: sidebar + results
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+// Sidebar
+.sidebar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: $surface-white;
+  padding: 1.5rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    width: 256px;
+    flex-shrink: 0;
+  }
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-title {
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.filter-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.price-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.price-separator {
+  color: $muted-text;
+  font-size: 12px;
+}
+
+// Product results
+.results {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.product-image {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #eeeeee;
+  margin-bottom: 1rem;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 !important;
+}
+
+.product-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.product-description {
+  font-size: 14px;
+  color: $muted-text;
+  margin: 0.25rem 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-price {
+  font-size: 15px;
+  font-weight: 600;
+  padding-top: 0.5rem;
+  display: block;
+}
+
+.paginator {
+  background: transparent;
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
