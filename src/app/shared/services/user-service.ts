@@ -6,8 +6,8 @@ import {
   UpdateProfileRequest,
   UpdateRoleRequest,
   User,
-} from '../../core/interfaces/User';
-import { Page } from '../../core/interfaces/Page';
+} from '../../core/interfaces/user';
+import { Page } from '../../core/interfaces/page';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {

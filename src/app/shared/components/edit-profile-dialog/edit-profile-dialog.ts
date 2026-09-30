@@ -6,7 +6,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { User } from '../../../core/interfaces/User';
+import { User } from '../../../core/interfaces/user';
 import { AuthService } from '../../../features/auth/auth-service';
 
 @Component({

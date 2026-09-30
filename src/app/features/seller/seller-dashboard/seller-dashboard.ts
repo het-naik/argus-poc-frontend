@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { Product } from '../../../core/interfaces/Product';
+import { Product } from '../../../core/interfaces/product';
 import { AuthService } from '../../auth/auth-service';
 import { ProductTable } from '../../../shared/components/product-table/product-table';
 import { ProfileCard } from '../../../shared/components/profile-card/profile-card';

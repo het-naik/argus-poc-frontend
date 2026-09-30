@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CategoryType, Product, ProductRequest } from '../../core/interfaces/Product';
-import { Page } from '../../core/interfaces/Page';
+import { CategoryType, Product, ProductRequest } from '../../core/interfaces/product';
+import { Page } from '../../core/interfaces/page';
 
 @Service()
 export class Productservice {

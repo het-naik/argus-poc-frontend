@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { formatCategory, Product } from '../../../core/interfaces/Product';
+import { formatCategory, Product } from '../../../core/interfaces/product';
 import { ProductEditDialog } from '../product-edit-dialog/product-edit-dialog';
 
 @Component({

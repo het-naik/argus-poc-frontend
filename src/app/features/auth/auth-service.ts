@@ -1,6 +1,6 @@
 import { inject, Service, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { RoleType, UpdateProfileRequest, User } from '../../core/interfaces/User';
+import { RoleType, UpdateProfileRequest, User } from '../../core/interfaces/user';
 import { UserService } from '../../shared/services/user-service';
 
 @Service()

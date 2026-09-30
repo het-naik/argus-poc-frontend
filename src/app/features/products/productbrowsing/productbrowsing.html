@@ -3,17 +3,10 @@
 
   <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
     <mat-icon matPrefix>search</mat-icon>
-    <input
-      matInput
-      type="search"
-      placeholder="Search products"
-      [(ngModel)]="searchTerm"
-      (ngModelChange)="applyClientFilters()"
-      name="search"
-    />
+    <input matInput type="search" placeholder="Search products" [(ngModel)]="searchTerm" name="search"/>
   </mat-form-field>
 
-  <button mat-icon-button class="cart-button" [matBadge]="cartCount" matBadgeColor="accent" aria-label="Cart">
+  <button mat-icon-button class="cart-button" aria-label="Cart" [matBadge]="cartCount" matBadgeColor="warn" [matBadgeHidden]="cartCount === 0" matBadgeSize="small">
     <mat-icon>shopping_cart</mat-icon>
   </button>
 
@@ -26,24 +19,20 @@
   <div class="layout">
 
     <!-- Filters sidebar -->
-    <div class="sidebar">
+    <div class="filterbar">
 
-      <div class="sidebar-header">
-        <span class="sidebar-title">Filters</span>
+      <div class="filterbar-header">
+        <span class="filterbar-title">Filters</span>
         <button mat-button color="primary" (click)="resetFilters()">Reset</button>
       </div>
 
       <!-- Sort By -->
       <div class="filter-block">
         <span class="filter-title">Sort By</span>
-        <mat-radio-group
-          class="filter-options"
-          [(ngModel)]="selectedSort"
-          (change)="onSortChange()"
-        >
-          @for (option of sortOptions; track option.value) {
-            <mat-radio-button [value]="option.value">{{ option.label }}</mat-radio-button>
-          }
+        <mat-radio-group class="filter-options" [(ngModel)]="selectedSort">
+          <mat-radio-button *ngFor="let option of sortOptions" [value]="option.value">
+            {{ option.label }}
+          </mat-radio-button>
         </mat-radio-group>
       </div>
 
@@ -53,14 +42,9 @@
       <div class="filter-block">
         <span class="filter-title">Category</span>
         <div class="filter-options">
-          @for (category of categories; track category.type) {
-            <mat-checkbox
-              [(ngModel)]="category.checked"
-              (change)="onCategoryChange()"
-            >
-              {{ category.label }}
-            </mat-checkbox>
-          }
+          <mat-checkbox *ngFor="let category of categories" [(ngModel)]="category.checked">
+            {{ category.label }}
+          </mat-checkbox>
         </div>
       </div>
 
@@ -72,25 +56,13 @@
 
         <div class="price-inputs">
           <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <input
-              matInput
-              type="number"
-              [(ngModel)]="minPrice"
-              (ngModelChange)="applyClientFilters()"
-              name="minPrice"
-            />
+            <input matInput type="number" [(ngModel)]="minPrice" name="minPrice" />
           </mat-form-field>
 
           <span class="price-separator">&ndash;</span>
 
           <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <input
-              matInput
-              type="number"
-              [(ngModel)]="maxPrice"
-              (ngModelChange)="applyClientFilters()"
-              name="maxPrice"
-            />
+            <input matInput type="number" [(ngModel)]="maxPrice" name="maxPrice" />
           </mat-form-field>
         </div>
 
@@ -102,9 +74,8 @@
       <div class="filter-block">
         <span class="filter-title">Availability</span>
         <div class="filter-options">
-          <mat-checkbox [(ngModel)]="inStockOnly" (change)="applyClientFilters()">
-            In Stock
-          </mat-checkbox>
+          <mat-checkbox [(ngModel)]="inStockOnly">In Stock</mat-checkbox>
+          <mat-checkbox [(ngModel)]="preOrderOnly">Pre-order</mat-checkbox>
         </div>
       </div>
 
@@ -113,47 +84,42 @@
     <!-- Product grid -->
     <section class="results">
 
-      @if (loading()) {
-        <p class="status-message">Loading products...</p>
-      } @else if (products().length === 0) {
-        <p class="status-message">No products match your filters.</p>
-      }
+      <div class="state-message" *ngIf="isLoading">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
 
-      <div class="product-grid">
-        @for (product of products(); track product.productId) {
-          <mat-card class="product-card">
-            <div class="product-image">
-              <img [src]="product.productImageUrl" [alt]="product.name" />
+      <div class="state-message" *ngIf="errorMessage && !isLoading">
+        <p>{{ errorMessage }}</p>
+        <button mat-button color="primary" (click)="fetchProducts()">Retry</button>
+      </div>
+
+      <div class="product-grid" *ngIf="!isLoading && !errorMessage">
+        <mat-card *ngFor="let product of products" class="product-card">
+          <div class="product-image">
+            <img [src]="product.productImageUrl" [alt]="product.name" />
+          </div>
+
+          <mat-card-content class="product-info">
+            <div>
+              <h2 class="product-name">{{ product.name }}</h2>
+              <p class="product-description">{{ product.description }}</p>
             </div>
-
-            <mat-card-content class="product-info">
-              <div>
-                <h2 class="product-name">{{ product.name }}</h2>
-                <p class="product-description">{{ product.description }}</p>
-              </div>
-              <span class="product-price">Rs. {{ product.pricePerUnit }}</span>
-            </mat-card-content>
-
-            <mat-card-actions class="product-actions">
+            <span class="product-price">Rs. {{ product.pricePerUnit}}</span>
+          </mat-card-content>
+          
+          <mat-card-actions class="product-actions">
               <button mat-stroked-button color="primary" (click)="viewDetails(product)">View Details</button>
-              <button
-                mat-flat-button
-                color="primary"
-                [disabled]="product.stock === 0"
-                (click)="addToCart(product)"
-              >
-                {{ product.stock === 0 ? 'Out of Stock' : 'Add to Cart' }}
-              </button>
-            </mat-card-actions>
-          </mat-card>
-        }
+              <button mat-flat-button color="primary" (click)="addToCart(product)">Add to Cart</button>
+          </mat-card-actions>
+        </mat-card>
       </div>
 
       <mat-paginator
+      *ngIf="!isLoading && !errorMessage"
         class="paginator"
-        [length]="totalItems()"
+        [length]="totalItems"
         [pageSize]="pageSize"
-        [pageSizeOptions]="[10, 20, 50]"
+        [pageSizeOptions]="[20, 50, 100]"
         [pageIndex]="pageIndex"
         (page)="onPageChange($event)"
         showFirstLastButtons

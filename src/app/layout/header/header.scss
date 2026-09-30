@@ -1,0 +1,29 @@
+.app-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.nav-links a.active-link {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}

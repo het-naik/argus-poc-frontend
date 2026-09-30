@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { CategoryType, Product, ProductRequest, formatCategory } from '../../../core/interfaces/Product';
+import { CategoryType, Product, ProductRequest, formatCategory } from '../../../core/interfaces/product';
 import { Productservice } from '../../../features/products/productservice';
 
 @Component({

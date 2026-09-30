@@ -6,20 +6,12 @@ import { Productbrowsing } from './features/products/productbrowsing/productbrow
 import { Productdetails } from './features/products/productdetails/productdetails';
 import { SellerDashboard } from './features/seller/seller-dashboard/seller-dashboard';
 
-export const routes: Routes = [ 
-  { 
-    path: 'orders',
-    loadComponent: () => OrderList
-  },
-   { 
-    path: 'orders/:id',
-    loadComponent: () => OrderDetail
-  },
-   { 
-    path: 'carts/customer/:id',
-    loadComponent: () => CartComponent
-  } ,
-  {path : '', component : Productbrowsing},
+export const routes: Routes = [
+
+    {path: 'orders', loadComponent: () => OrderList},
+    {path: 'orders/:id', loadComponent: () => OrderDetail},
+    {path: 'carts/customer/:id', loadComponent: () => CartComponent},
+    {path : '', component : Productbrowsing},
     {path : 'products/:id', component : Productdetails},
-  {path: 'seller', component: SellerDashboard}
+    {path: 'seller', component: SellerDashboard}
 ];

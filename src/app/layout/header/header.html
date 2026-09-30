@@ -1,1 +1,17 @@
-<p>header works!</p>
+<mat-toolbar color="primary" class="app-toolbar">
+
+  <nav class="nav-links">
+    <a mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    <a mat-button routerLink="/" routerLinkActive="active-link">Orders</a>
+    <a mat-button routerLink="/" routerLinkActive="active-link">Dashboard</a>
+    <a mat-button routerLink="/" routerLinkActive="active-link">Profile</a>
+  </nav>
+
+  <span class="spacer"></span>
+
+  <button mat-stroked-button color="warn" class="logout-button" (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    Logout
+  </button>
+
+</mat-toolbar>
