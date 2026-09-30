@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Edit profile</h2>
+
+<form [formGroup]="form" (ngSubmit)="save()">
+  <mat-dialog-content class="flex flex-col gap-2 pt-2">
+    <mat-form-field appearance="outline">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" autocomplete="username" />
+      @if (form.controls.username.hasError('required') || form.controls.username.hasError('pattern')) {
+        <mat-error>Username is required</mat-error>
+      } @else if (form.controls.username.hasError('minlength')) {
+        <mat-error>Minimum 2 characters</mat-error>
+      } @else if (form.controls.username.hasError('maxlength')) {
+        <mat-error>Maximum 50 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" autocomplete="email" />
+      @if (form.controls.email.hasError('required')) {
+        <mat-error>Email is required</mat-error>
+      } @else if (form.controls.email.hasError('email')) {
+        <mat-error>Enter a valid email address</mat-error>
+      }
+    </mat-form-field>
+
+    @if (errorMessage(); as msg) {
+      <p class="text-sm text-red-600" role="alert">{{ msg }}</p>
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" mat-dialog-close [disabled]="saving()">Cancel</button>
+    <button mat-flat-button type="submit" [disabled]="saving()">
+      {{ saving() ? 'Saving…' : 'Save' }}
+    </button>
+  </mat-dialog-actions>
+</form>

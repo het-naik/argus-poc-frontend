@@ -14,8 +14,11 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { Product, Productservice } from '../productservice';
+import { ProductService } from '../productservice';
+
 import { Router } from '@angular/router';
+import { Product } from '../../../core/interfaces/Product';
+import { Page } from '../../../core/interfaces/Page';
 
 
 
@@ -38,10 +41,10 @@ export type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'newest';
 
 export class Productbrowsing {
 
-  products : Product[] = [];
+  products !: Product[];
 
-  constructor(private router : Router, private productService : Productservice){
-    this.products = this.productService.getProducts();
+  constructor(private router : Router, private productService : ProductService){
+    this.productService.getAllProducts().subscribe((res) => this.products = res.content);
   }
 
   searchTerm = '';
@@ -92,7 +95,7 @@ export class Productbrowsing {
 
   viewDetails(product : Product) {
     console.log("View Details: ", product);
-    this.router.navigate(['/products', product.id]);
+    this.router.navigate(['/products', product.productId]);
   }
 
   addToCart(product : Product) {

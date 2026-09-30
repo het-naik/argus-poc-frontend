@@ -17,3 +17,8 @@
   opacity: 0.6;
   word-break: break-all;
 }
+
+.form-error {
+  color: var(--mat-sys-error, #b3261e);
+  margin: 0;
+}

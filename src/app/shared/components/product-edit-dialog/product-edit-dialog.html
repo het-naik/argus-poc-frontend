@@ -7,8 +7,10 @@
     <mat-form-field appearance="outline">
       <mat-label>Product name</mat-label>
       <input matInput formControlName="name" />
-      @if (form.controls.name.hasError('required')) {
+      @if (form.controls.name.hasError('required') || form.controls.name.hasError('pattern')) {
         <mat-error>Product name is required</mat-error>
+      } @else if (form.controls.name.hasError('minlength')) {
+        <mat-error>Minimum 2 characters</mat-error>
       } @else if (form.controls.name.hasError('maxlength')) {
         <mat-error>Maximum 100 characters</mat-error>
       }
@@ -17,10 +19,9 @@
     <mat-form-field appearance="outline">
       <mat-label>Description</mat-label>
       <textarea matInput rows="3" formControlName="description"></textarea>
-      @if (form.controls.description.hasError('required')) {
-        <mat-error>Description is required</mat-error>
-      } @else if (form.controls.description.hasError('maxlength')) {
-        <mat-error>Maximum 200 characters</mat-error>
+      <mat-hint align="end">{{ form.controls.description.value.length }} / 1000</mat-hint>
+      @if (form.controls.description.hasError('maxlength')) {
+        <mat-error>Maximum 1000 characters</mat-error>
       }
     </mat-form-field>
 
@@ -37,11 +38,11 @@
     <div class="row">
       <mat-form-field appearance="outline">
         <mat-label>Price per unit</mat-label>
-        <input matInput type="number" min="0" formControlName="pricePerUnit" />
+        <input matInput type="number" min="0.1" step="0.01" formControlName="pricePerUnit" />
         @if (form.controls.pricePerUnit.hasError('required')) {
           <mat-error>Price is required</mat-error>
         } @else if (form.controls.pricePerUnit.hasError('min')) {
-          <mat-error>Price can't be negative</mat-error>
+          <mat-error>Price must be at least 0.1</mat-error>
         }
       </mat-form-field>
 
@@ -50,9 +51,7 @@
         <input matInput type="number" min="0" step="1" formControlName="stock" />
         @if (form.controls.stock.hasError('required')) {
           <mat-error>Stock is required</mat-error>
-        } @else if (
-          form.controls.stock.hasError('min') || form.controls.stock.hasError('pattern')
-        ) {
+        } @else if (form.controls.stock.hasError('min') || form.controls.stock.hasError('pattern')) {
           <mat-error>Enter a whole number, 0 or more</mat-error>
         }
       </mat-form-field>
@@ -61,8 +60,11 @@
     <mat-form-field appearance="outline">
       <mat-label>Image URL</mat-label>
       <input matInput type="url" formControlName="productImageUrl" />
-      <mat-error>Image URL is required</mat-error>
     </mat-form-field>
+
+    @if (errorMessage(); as msg) {
+      <p class="form-error" role="alert">{{ msg }}</p>
+    }
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">

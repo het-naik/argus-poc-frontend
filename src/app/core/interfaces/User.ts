@@ -1,12 +1,22 @@
 export enum RoleType {
-    CUSTOMER,
-    ADMIN,
-    SELLER
+  CUSTOMER = 'CUSTOMER',
+  ADMIN = 'ADMIN',
+  SELLER = 'SELLER',
 }
 
 export interface User {
-    id: String;
-    username: String;
-    email: String;
-    role: RoleType;
+  id: string;
+  username: string;
+  email: string;
+  role: RoleType;
+}
+
+export interface UpdateProfileRequest {
+  username: string;
+  email: string;
+}
+
+export interface UpdateRoleRequest {
+  id: string;
+  role: RoleType;
 }

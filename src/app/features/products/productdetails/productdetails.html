@@ -8,22 +8,22 @@
   <mat-card class="details-card">
 
     <div class="details-image">
-      <img [src]="product.imageUrl" [alt]="product.name" />
+      <img [src]="product.productImageUrl" [alt]="product.name" />
     </div>
 
     <mat-card-content class="details-content">
 
       <mat-chip-set>
-        <mat-chip>{{ product.category }}</mat-chip>
+        <mat-chip>{{ product.categoryType }}</mat-chip>
       </mat-chip-set>
 
       <h1 class="details-name">{{ product.name }}</h1>
 
-      <p class="details-seller">Sold by {{ product.sellerName }}</p>
+      <p class="details-seller">Sold by {{ product.sellerId }}</p>
 
       <p class="details-description">{{ product.description }}</p>
 
-      <span class="details-price">Rs. {{ product.price }}</span>
+      <span class="details-price">Rs. {{ product.pricePerUnit }}</span>
 
     </mat-card-content>
 
