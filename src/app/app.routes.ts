@@ -4,6 +4,8 @@ import { OrderList } from './features/orders/order-list/order-list';
 import { CartComponent } from './features/cart/cart';
 
 import { SellerDashboard } from './features/seller/seller-dashboard/seller-dashboard';
+import { Productbrowsing } from './features/products/productbrowsing/productbrowsing';
+import { Productdetails } from './features/products/productdetails/productdetails';
 
 export const routes: Routes = [ 
   { 
@@ -18,6 +20,8 @@ export const routes: Routes = [
     path: 'carts/customer/:id',
     loadComponent: () => CartComponent
   } ,
-
+   {path : '', component : Productbrowsing},
+    {path : 'products/:id', component : Productdetails},
   {path: 'seller', component: SellerDashboard}
+
 ];

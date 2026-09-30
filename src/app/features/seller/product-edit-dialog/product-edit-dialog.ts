@@ -30,7 +30,7 @@ export class ProductEditDialog{
 
   categories = Object.values(CategoryType).map((value) => ({
     value,
-    label: "sdbsdba",
+    label: value,
   }));
 
   saving = signal(false);

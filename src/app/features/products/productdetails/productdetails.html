@@ -1,0 +1,50 @@
+<div class="page">
+
+  <div class="state-message" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div class="not-found" *ngIf="errorMessage && !isLoading">
+    <p>{{ errorMessage }}</p>
+    <button mat-button color="primary" (click)="goBack()">Back</button>
+  </div>
+
+  <ng-container *ngIf="product && !isLoading">
+    <button mat-button color="primary" class="back-button" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+
+    <mat-card class="details-card">
+
+      <div class="details-image">
+        <img [src]="product.productImageUrl" [alt]="product.name" />
+      </div>
+
+      <mat-card-content class="details-content">
+
+        <mat-chip-set>
+          <mat-chip>{{ formatCategory(product.categoryType) }}</mat-chip>
+        </mat-chip-set>
+
+        <h1 class="details-name">{{ product.name }}</h1>
+
+        <p class="details-description">{{ product.description }}</p>
+
+        <span class="details-price">Rs. {{ product.pricePerUnit }}</span>
+
+      </mat-card-content>
+
+      <mat-card-actions class="details-actions">
+        <button mat-flat-button color="primary" (click)="addToCart()">Add to Cart</button>
+      </mat-card-actions>
+
+    </mat-card>
+  </ng-container>
+
+</div>
+
+<div class="not-found" *ngIf="!product">
+  <p>Product not found.</p>
+  <button mat-button color="primary" (click)="goBack()">Back</button>
+</div>
