@@ -8,11 +8,12 @@ export interface Order{
     orderItems:OrderItem[];
     status:OrderStatus;
     paymentMethod:PaymentMethod;
-    address:Address;
+    addressId: string;   
 }
 export interface OrderItem{
     id:string;
-    product:Product;
+    productId:string;
+    productName:string;
     quantity:number;
     price:number;
 }
@@ -27,14 +28,11 @@ export interface Product{
 }
 export interface Address{
     addressId:string;
-    userId:String;
-    line1:string;
-    line2:String;
-    line3:string;
+    customerId:string;
+    fullAddress:string;
     city:string;
     state:string;
-    zipCode:String;
-    isActive:boolean;
+    zipCode:string;
 }
 export interface Cart {
   cartId: string;
@@ -43,7 +41,8 @@ export interface Cart {
 }
 export interface CartItem{
     id:string;
-    product:Product;
+    productId:number;
+    productName:string;
     quantity:number;
 }
 export interface AppUser {

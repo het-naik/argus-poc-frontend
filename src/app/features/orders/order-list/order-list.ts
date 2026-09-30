@@ -8,10 +8,11 @@ import { map, of, switchMap } from 'rxjs';
 import { OrderService } from './order.service';
 import { Order,getTotal } from '../../../core/models/order.model';
 import { RouterLink } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-order-list',
-  imports: [MatTableModule, MatChipsModule, DecimalPipe, RouterLink],
+  imports: [MatTableModule, MatChipsModule, DecimalPipe, RouterLink, MatIcon],
   templateUrl: './order-list.html',
   styleUrl: './order-list.scss',
 })
@@ -57,5 +58,8 @@ orders = toSignal(
   ];
   countTotal(o:Order):number{
     return getTotal(o);
+  }
+    statusClass(status: string): string {
+    return 'status-' + (status ?? 'unknown').toLowerCase();
   }
 }

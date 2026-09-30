@@ -1,56 +1,69 @@
-<h2 style="margin: 16px 0;">Orders</h2>
+<div class="page">
+  <header class="page-header">
+    <div>
+      <h2>{{ isAdmin ? 'All Orders' : 'My Orders' }}</h2>
+      <p class="subtitle">{{ orders().length }} order{{ orders().length === 1 ? '' : 's' }}</p>
+    </div>
+  </header>
 
-<div style="overflow-x: auto;">
-  <table mat-table [dataSource]="orders()" class="mat-elevation-z2" style="width: 100%;">
+  <div class="table-card mat-elevation-z2">
+    <div class="table-scroll">
+      <table mat-table [dataSource]="orders()">
 
-    <ng-container matColumnDef="orderId">
-      <th mat-header-cell *matHeaderCellDef>Order ID</th>
-      <td mat-cell *matCellDef="let order">
-        <a [routerLink]="['/orders', order.orderId]"
-           style="color: #1976d2; text-decoration: none; font-weight: 500;">
-          {{ order.orderId }}
-        </a>
-      </td>
-    </ng-container>
+        <ng-container matColumnDef="orderId">
+          <th mat-header-cell *matHeaderCellDef>Order</th>
+          <td mat-cell *matCellDef="let order">
+            <a class="order-link" [routerLink]="['/orders', order.orderId]" [title]="order.orderId">
+              #{{ order.orderId  }}
+            </a>
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="customerId">
-      <th mat-header-cell *matHeaderCellDef>Customer</th>
-      <td mat-cell *matCellDef="let order">{{ order.customerId }}</td>
-    </ng-container>
+        <ng-container matColumnDef="customerId">
+          <th mat-header-cell *matHeaderCellDef>Customer</th>
+          <td mat-cell *matCellDef="let order" [title]="order.customerId">
+            {{ order.customerId  }}
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="orderItems">
-      <th mat-header-cell *matHeaderCellDef>Items</th>
-      <td mat-cell *matCellDef="let order">{{ order.orderItems?.length ?? 0 }}</td>
-    </ng-container>
+        <ng-container matColumnDef="orderItems">
+          <th mat-header-cell *matHeaderCellDef class="center">Items</th>
+          <td mat-cell *matCellDef="let order" class="center">
+            {{ order.orderItems?.length ?? 0 }}
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="total">
-      <th mat-header-cell *matHeaderCellDef style="text-align: right;">Total</th>
-      <td mat-cell *matCellDef="let order" style="text-align: right;">
-        {{ countTotal(order) }}
-      </td>
-    </ng-container>
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef class="right">Total</th>
+          <td mat-cell *matCellDef="let order" class="right total">
+            {{ countTotal(order)  }}
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="paymentMethod">
-      <th mat-header-cell *matHeaderCellDef>Payment</th>
-      <td mat-cell *matCellDef="let order">{{ order.paymentMethod }}</td>
-    </ng-container>
+        <ng-container matColumnDef="paymentMethod">
+          <th mat-header-cell *matHeaderCellDef>Payment</th>
+          <td mat-cell *matCellDef="let order">{{ order.paymentMethod }}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let order">
-        <mat-chip>{{ order.status }}</mat-chip>
-      </td>
-    </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let order">
+            <span class="status-badge" [class]="'status-badge ' + statusClass(order.status)">
+              {{ order.status }}
+            </span>
+          </td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell"
-          [attr.colspan]="displayedColumns.length"
-          style="text-align: center; padding: 24px; color: #777;">
-        No orders found.
-      </td>
-    </tr>
-  </table>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell empty" [attr.colspan]="displayedColumns.length">
+            <mat-icon>receipt_long</mat-icon>
+            <p>No orders found.</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
