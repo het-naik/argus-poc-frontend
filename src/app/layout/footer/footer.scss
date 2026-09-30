@@ -1,0 +1,21 @@
+$muted-text: #5e5e5e;
+$border-color: #e2e2e2;
+$surface-white: #ffffff;
+
+.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: $surface-white;
+  border-top: 1px solid $border-color;
+  font-size: 13px;
+  color: $muted-text;
+}
+
+.footer-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}

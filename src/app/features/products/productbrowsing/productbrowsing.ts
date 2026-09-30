@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -14,8 +14,10 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { Product, Productservice } from '../productservice';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Productservice } from '../productservice';
 import { Router } from '@angular/router';
+import { formatCategory, Product } from '../../../core/interfaces/Product';
 
 
 
@@ -29,20 +31,18 @@ export type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'newest';
 
 @Component({
   imports: [CommonModule, FormsModule, MatToolbarModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatCardModule,
-    MatCheckboxModule, MatRadioModule, MatSliderModule, MatDividerModule, MatPaginatorModule, MatBadgeModule],
+    MatCheckboxModule, MatRadioModule, MatSliderModule, MatDividerModule, MatPaginatorModule, MatBadgeModule, MatProgressSpinnerModule],
   selector: 'app-productbrowsing',
   styleUrl: './productbrowsing.scss',
   templateUrl: './productbrowsing.html',
 })
 
 
-export class Productbrowsing {
+export class Productbrowsing implements OnInit {
 
-  products : Product[] = [];
+  formatCategory = formatCategory;
 
-  constructor(private router : Router, private productService : Productservice){
-    this.products = this.productService.getProducts();
-  }
+  constructor(private router : Router, private productService : Productservice, private cdr : ChangeDetectorRef){}
 
   searchTerm = '';
 
@@ -71,14 +71,45 @@ export class Productbrowsing {
   inStockOnly = true;
   preOrderOnly = false;
 
-  totalItems = 6;
-
   pageIndex = 0;
   pageSize = 10;
+
+  products : Product[] = [];
+  totalItems = 0;
+  isLoading = false;
+  errorMessage = '';
+
+  ngOnInit(): void {
+    this.fetchProducts();
+  }
+
+  fetchProducts() {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.productService.getProducts(this.pageIndex, this.pageSize).subscribe({
+      next : (response) => {
+        console.log('API response: ', response);
+        console.log('Products array: ', response.content);
+        this.products = response.content;
+        this.totalItems = response.totalElements;
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error : (err) => {
+        console.log("Failed to fetch products: ", err);
+        this.errorMessage = 'Could not load products';
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
 
   onPageChange(event : PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
+    this.fetchProducts();
   }
 
   resetFilters() {
@@ -88,11 +119,13 @@ export class Productbrowsing {
     this.inStockOnly = false;
     this.preOrderOnly = false;
     this.selectedSort = 'featured';
+    this.pageIndex = 0;
+    this.fetchProducts();
   }
 
   viewDetails(product : Product) {
     console.log("View Details: ", product);
-    this.router.navigate(['/products', product.id]);
+    this.router.navigate(['/products', product.productId]);
   }
 
   addToCart(product : Product) {

@@ -7,6 +7,7 @@ export enum CategoryType {
     ESSENTIALS_FOOD_GROCERY
 }
 
+
 export function formatCategory(category: unknown): string {
   return String(category)
     .toLowerCase()
@@ -16,14 +17,24 @@ export function formatCategory(category: unknown): string {
 }
 
 export interface Product {
-    productId : String;
-    name:String;
-    description: String;
+    productId : string;
+    name:string;
+    description: string;
     pricePerUnit: number;
     stock: number;
     categoryType: CategoryType;
-    productImageUrl: String;
+    productImageUrl: string;
     createdAt: Date;
     updatedAt: Date;
-    sellerId: String;
+    sellerId: string;
+}
+
+export interface Page<T> {
+    content : T[];
+    totalElements : number;
+    totalPages : number;
+    number : number;
+    size : number;
+    first : boolean;
+    last : boolean;
 }
