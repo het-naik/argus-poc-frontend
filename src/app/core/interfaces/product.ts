@@ -33,6 +33,7 @@ export interface Product {
   sellerId: string;
 }
 
+
 export interface ProductRequest {
   name: string;
   description?: string;
