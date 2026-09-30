@@ -1,37 +1,46 @@
-<div class="page" *ngIf="product">
+<div class="page">
 
-  <button mat-button color="primary" class="back-button" (click)="goBack()">
-    <mat-icon>arrow_back</mat-icon>
-    Back
-  </button>
+  <div class="state-message" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
 
-  <mat-card class="details-card">
+  <div class="not-found" *ngIf="errorMessage && !isLoading">
+    <p>{{ errorMessage }}</p>
+    <button mat-button color="primary" (click)="goBack()">Back</button>
+  </div>
 
-    <div class="details-image">
-      <img [src]="product.imageUrl" [alt]="product.name" />
-    </div>
+  <ng-container *ngIf="product && !isLoading">
+    <button mat-button color="primary" class="back-button" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
 
-    <mat-card-content class="details-content">
+    <mat-card class="details-card">
 
-      <mat-chip-set>
-        <mat-chip>{{ product.category }}</mat-chip>
-      </mat-chip-set>
+      <div class="details-image">
+        <img [src]="product.productImageUrl" [alt]="product.name" />
+      </div>
 
-      <h1 class="details-name">{{ product.name }}</h1>
+      <mat-card-content class="details-content">
 
-      <p class="details-seller">Sold by {{ product.sellerName }}</p>
+        <mat-chip-set>
+          <mat-chip>{{ formatCategory(product.categoryType) }}</mat-chip>
+        </mat-chip-set>
 
-      <p class="details-description">{{ product.description }}</p>
+        <h1 class="details-name">{{ product.name }}</h1>
 
-      <span class="details-price">Rs. {{ product.price }}</span>
+        <p class="details-description">{{ product.description }}</p>
 
-    </mat-card-content>
+        <span class="details-price">Rs. {{ product.pricePerUnit }}</span>
 
-    <mat-card-actions class="details-actions">
-      <button mat-flat-button color="primary" (click)="addToCart()">Add to Cart</button>
-    </mat-card-actions>
+      </mat-card-content>
 
-  </mat-card>
+      <mat-card-actions class="details-actions">
+        <button mat-flat-button color="primary" (click)="addToCart()">Add to Cart</button>
+      </mat-card-actions>
+
+    </mat-card>
+  </ng-container>
 
 </div>
 

@@ -6,7 +6,7 @@
     <input matInput type="search" placeholder="Search products" [(ngModel)]="searchTerm" name="search"/>
   </mat-form-field>
 
-  <button class="cart-button">
+  <button mat-icon-button class="cart-button" aria-label="Cart" [matBadge]="cartCount" matBadgeColor="warn" [matBadgeHidden]="cartCount === 0" matBadgeSize="small">
     <mat-icon>shopping_cart</mat-icon>
   </button>
 
@@ -19,10 +19,10 @@
   <div class="layout">
 
     <!-- Filters sidebar -->
-    <div class="sidebar">
+    <div class="filterbar">
 
-      <div class="sidebar-header">
-        <span class="sidebar-title">Filters</span>
+      <div class="filterbar-header">
+        <span class="filterbar-title">Filters</span>
         <button mat-button color="primary" (click)="resetFilters()">Reset</button>
       </div>
 
@@ -84,10 +84,19 @@
     <!-- Product grid -->
     <section class="results">
 
-      <div class="product-grid">
+      <div class="state-message" *ngIf="isLoading">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <div class="state-message" *ngIf="errorMessage && !isLoading">
+        <p>{{ errorMessage }}</p>
+        <button mat-button color="primary" (click)="fetchProducts()">Retry</button>
+      </div>
+
+      <div class="product-grid" *ngIf="!isLoading && !errorMessage">
         <mat-card *ngFor="let product of products" class="product-card">
           <div class="product-image">
-            <img [src]="product.imageUrl" [alt]="product.name" />
+            <img [src]="product.productImageUrl" [alt]="product.name" />
           </div>
 
           <mat-card-content class="product-info">
@@ -95,7 +104,7 @@
               <h2 class="product-name">{{ product.name }}</h2>
               <p class="product-description">{{ product.description }}</p>
             </div>
-            <span class="product-price">Rs. {{ product.price}}</span>
+            <span class="product-price">Rs. {{ product.pricePerUnit}}</span>
           </mat-card-content>
           
           <mat-card-actions class="product-actions">
@@ -106,6 +115,7 @@
       </div>
 
       <mat-paginator
+      *ngIf="!isLoading && !errorMessage"
         class="paginator"
         [length]="totalItems"
         [pageSize]="pageSize"
