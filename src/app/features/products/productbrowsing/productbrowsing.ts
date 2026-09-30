@@ -17,7 +17,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Productservice } from '../productservice';
 import { Router } from '@angular/router';
-import { formatCategory, Product } from '../../../core/interfaces/Product';
+import { formatCategory, Product } from '../../../core/interfaces/product';
 
 
 

@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { formatCategory, Product } from '../../../core/interfaces/Product';
+import { formatCategory, Product } from '../../../core/interfaces/product';
 
 @Component({
   imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, MatProgressSpinnerModule],
