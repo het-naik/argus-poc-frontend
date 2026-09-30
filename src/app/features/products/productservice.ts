@@ -1,68 +1,75 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { CategoryType, Product, ProductRequest } from '../../core/interfaces/Product';
-import { Page, PageParams } from '../../core/interfaces/Page';
-
+import { Page } from '../../core/interfaces/Page';
 
 @Service()
-export class ProductService {
+export class Productservice {
 
-  private http = inject(HttpClient);
+    private baseUrl = 'http://localhost:8080/api/products';
 
-  private readonly baseUrl = 'http://localhost:8080/api/products';
-  private readonly jsonHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+    private http = inject(HttpClient);
 
-  getAllProducts(pageParams: PageParams = {}): Observable<Page<Product>> {
-    return this.http.get<Page<Product>>(this.baseUrl, { params: this.toParams(pageParams) });
-  }
+    getProducts(page : number, size : number, sort ?: string) : Observable<Page<Product>> {
+      let params = new HttpParams().set('page', page).set('size', size);
+      if(sort) {
+        params = params.set('sort', sort);
+      }
+      return this.http.get<Page<Product>>(this.baseUrl, {params});
+    }
+    
+    getProductById(id : string) : Observable<Product> {
+      return this.http.get<Product>(`${this.baseUrl}/${id}`);
+    }
 
-  getProductById(productId: string): Observable<Product> {
-    return this.http.get<Product>(`${this.baseUrl}/${productId}`);
-  }
-
-  getProductsBySeller(sellerId: string, pageParams: PageParams = {}): Observable<Page<Product>> {
+    getProductsBySeller(
+    sellerId: string,
+    page: number,
+    size: number,
+    sort?: string,
+  ): Observable<Page<Product>> {
     return this.http.get<Page<Product>>(`${this.baseUrl}/seller/${sellerId}`, {
-      params: this.toParams(pageParams),
+      params: this.toParams(page, size, sort),
     });
   }
 
-  getProductsByCategory(category: CategoryType, pageParams: PageParams = {}): Observable<Page<Product>> {
+  getProductsByCategory(
+    category: CategoryType,
+    page: number,
+    size: number,
+    sort?: string,
+  ): Observable<Page<Product>> {
     return this.http.get<Page<Product>>(`${this.baseUrl}/category/${category}`, {
-      params: this.toParams(pageParams),
+      params: this.toParams(page, size, sort),
     });
   }
 
-  addNewProduct(payload: ProductRequest): Observable<Product> {
-    return this.http.post<Product>(this.baseUrl, payload);
+  addProduct(request: ProductRequest): Observable<Product> {
+    return this.http.post<Product>(this.baseUrl, request);
   }
 
-  updateProduct(productId: string, payload: ProductRequest): Observable<Product> {
-    return this.http.put<Product>(`${this.baseUrl}/${productId}`, payload);
+  updateProduct(id: string, request: ProductRequest): Observable<Product> {
+    return this.http.put<Product>(`${this.baseUrl}/${id}`, request);
   }
 
-  updateProductStock(productId: string, stock: number): Observable<Product> {
-    return this.http.patch<Product>(`${this.baseUrl}/${productId}/stock`, JSON.stringify(stock), {
-      headers: this.jsonHeaders,
-    });
+  updateProductStock(id: string, stock: number): Observable<Product> {
+    return this.http.patch<Product>(`${this.baseUrl}/${id}/stock`, stock);
   }
 
-  updateProductPrice(productId: string, price: number): Observable<Product> {
-    return this.http.patch<Product>(`${this.baseUrl}/${productId}/price`, JSON.stringify(price), {
-      headers: this.jsonHeaders,
-    });
+  updateProductPrice(id: string, price: number): Observable<Product> {
+    return this.http.patch<Product>(`${this.baseUrl}/${id}/price`, price);
   }
 
-  deleteProduct(productId: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${productId}`);
+  deleteProduct(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  private toParams({ page, size, sort }: PageParams): HttpParams {
-    let params = new HttpParams();
-    if (page !== undefined) params = params.set('page', page);
-    if (size !== undefined) params = params.set('size', size);
-    if (sort) params = params.set('sort', sort);
+  private toParams(page: number, size: number, sort?: string): HttpParams {
+    let params = new HttpParams().set('page', page).set('size', size);
+    if (sort) {
+      params = params.set('sort', sort);
+    }
     return params;
   }
-
 }

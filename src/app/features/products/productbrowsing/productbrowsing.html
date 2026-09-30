@@ -3,10 +3,17 @@
 
   <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
     <mat-icon matPrefix>search</mat-icon>
-    <input matInput type="search" placeholder="Search products" [(ngModel)]="searchTerm" name="search"/>
+    <input
+      matInput
+      type="search"
+      placeholder="Search products"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="applyClientFilters()"
+      name="search"
+    />
   </mat-form-field>
 
-  <button class="cart-button">
+  <button mat-icon-button class="cart-button" [matBadge]="cartCount" matBadgeColor="accent" aria-label="Cart">
     <mat-icon>shopping_cart</mat-icon>
   </button>
 
@@ -29,10 +36,14 @@
       <!-- Sort By -->
       <div class="filter-block">
         <span class="filter-title">Sort By</span>
-        <mat-radio-group class="filter-options" [(ngModel)]="selectedSort">
-          <mat-radio-button *ngFor="let option of sortOptions" [value]="option.value">
-            {{ option.label }}
-          </mat-radio-button>
+        <mat-radio-group
+          class="filter-options"
+          [(ngModel)]="selectedSort"
+          (change)="onSortChange()"
+        >
+          @for (option of sortOptions; track option.value) {
+            <mat-radio-button [value]="option.value">{{ option.label }}</mat-radio-button>
+          }
         </mat-radio-group>
       </div>
 
@@ -42,9 +53,14 @@
       <div class="filter-block">
         <span class="filter-title">Category</span>
         <div class="filter-options">
-          <mat-checkbox *ngFor="let category of categories" [(ngModel)]="category.checked">
-            {{ category.label }}
-          </mat-checkbox>
+          @for (category of categories; track category.type) {
+            <mat-checkbox
+              [(ngModel)]="category.checked"
+              (change)="onCategoryChange()"
+            >
+              {{ category.label }}
+            </mat-checkbox>
+          }
         </div>
       </div>
 
@@ -56,13 +72,25 @@
 
         <div class="price-inputs">
           <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <input matInput type="number" [(ngModel)]="minPrice" name="minPrice" />
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="minPrice"
+              (ngModelChange)="applyClientFilters()"
+              name="minPrice"
+            />
           </mat-form-field>
 
           <span class="price-separator">&ndash;</span>
 
           <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <input matInput type="number" [(ngModel)]="maxPrice" name="maxPrice" />
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="maxPrice"
+              (ngModelChange)="applyClientFilters()"
+              name="maxPrice"
+            />
           </mat-form-field>
         </div>
 
@@ -74,8 +102,9 @@
       <div class="filter-block">
         <span class="filter-title">Availability</span>
         <div class="filter-options">
-          <mat-checkbox [(ngModel)]="inStockOnly">In Stock</mat-checkbox>
-          <mat-checkbox [(ngModel)]="preOrderOnly">Pre-order</mat-checkbox>
+          <mat-checkbox [(ngModel)]="inStockOnly" (change)="applyClientFilters()">
+            In Stock
+          </mat-checkbox>
         </div>
       </div>
 
@@ -84,32 +113,47 @@
     <!-- Product grid -->
     <section class="results">
 
-      <div class="product-grid">
-        <mat-card *ngFor="let product of products" class="product-card">
-          <div class="product-image">
-            <img [src]="product.productImageUrl" [alt]="product.name" />
-          </div>
+      @if (loading()) {
+        <p class="status-message">Loading products...</p>
+      } @else if (products().length === 0) {
+        <p class="status-message">No products match your filters.</p>
+      }
 
-          <mat-card-content class="product-info">
-            <div>
-              <h2 class="product-name">{{ product.name }}</h2>
-              <p class="product-description">{{ product.description }}</p>
+      <div class="product-grid">
+        @for (product of products(); track product.productId) {
+          <mat-card class="product-card">
+            <div class="product-image">
+              <img [src]="product.productImageUrl" [alt]="product.name" />
             </div>
-            <span class="product-price">Rs. {{ product.pricePerUnit}}</span>
-          </mat-card-content>
-          
-          <mat-card-actions class="product-actions">
+
+            <mat-card-content class="product-info">
+              <div>
+                <h2 class="product-name">{{ product.name }}</h2>
+                <p class="product-description">{{ product.description }}</p>
+              </div>
+              <span class="product-price">Rs. {{ product.pricePerUnit }}</span>
+            </mat-card-content>
+
+            <mat-card-actions class="product-actions">
               <button mat-stroked-button color="primary" (click)="viewDetails(product)">View Details</button>
-              <button mat-flat-button color="primary" (click)="addToCart(product)">Add to Cart</button>
-          </mat-card-actions>
-        </mat-card>
+              <button
+                mat-flat-button
+                color="primary"
+                [disabled]="product.stock === 0"
+                (click)="addToCart(product)"
+              >
+                {{ product.stock === 0 ? 'Out of Stock' : 'Add to Cart' }}
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        }
       </div>
 
       <mat-paginator
         class="paginator"
-        [length]="totalItems"
+        [length]="totalItems()"
         [pageSize]="pageSize"
-        [pageSizeOptions]="[20, 50, 100]"
+        [pageSizeOptions]="[10, 20, 50]"
         [pageIndex]="pageIndex"
         (page)="onPageChange($event)"
         showFirstLastButtons

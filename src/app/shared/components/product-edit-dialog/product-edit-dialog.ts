@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CategoryType, Product, ProductRequest, formatCategory } from '../../../core/interfaces/Product';
-import { ProductService } from '../../../features/products/productservice';
+import { Productservice } from '../../../features/products/productservice';
 
 @Component({
   selector: 'app-product-edit-dialog',
@@ -25,7 +25,7 @@ import { ProductService } from '../../../features/products/productservice';
 export class ProductEditDialog {
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<ProductEditDialog, Product>);
-  private productService = inject(ProductService);
+  private productService = inject(Productservice);
   product: Product = inject(MAT_DIALOG_DATA);
 
   categories = Object.values(CategoryType).map((value) => ({
