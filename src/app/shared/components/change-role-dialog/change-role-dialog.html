@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Change role</h2>
+
+<mat-dialog-content>
+  <div class="mb-4">
+    <div class="font-semibold text-slate-800">{{ user.username }}</div>
+    <div class="text-sm text-slate-400">{{ user.email }}</div>
+  </div>
+
+  @if (isSelf) {
+    <p class="text-sm text-amber-600 mb-2">You can't change your own role.</p>
+  }
+
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Role</mat-label>
+    <mat-select [formControl]="role" [disabled]="isSelf">
+      @for (r of roles; track r) {
+        <mat-option [value]="r">{{ r }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  @if (error()) {
+    <p class="text-sm text-red-600">{{ error() }}</p>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close [disabled]="saving()">Cancel</button>
+  <button mat-flat-button (click)="save()" [disabled]="saving() || isSelf">
+    {{ saving() ? 'Saving…' : 'Save' }}
+  </button>
+</mat-dialog-actions>

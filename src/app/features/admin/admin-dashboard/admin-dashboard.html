@@ -1,0 +1,17 @@
+<div class="flex flex-col w-full">
+  <app-profile-card />
+
+  <mat-tab-group animationDuration="0ms" mat-stretch-tabs="false">
+    <mat-tab label="Products">
+      <ng-template matTabContent>
+        <app-product-table [products]="products()" (productUpdated)="onProductUpdated($event)" />
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab label="Users">
+      <ng-template matTabContent>
+        <app-user-table [users]="users()" (userUpdated)="onUserUpdated($event)" />
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>
