@@ -6,7 +6,7 @@
     <input matInput type="search" placeholder="Search products" [(ngModel)]="searchTerm" name="search"/>
   </mat-form-field>
 
-  <button mat-icon-button class="cart-button" aria-label="Cart" [matBadge]="cartCount" matBadgeColor="warn" [matBadgeHidden]="cartCount === 0" matBadgeSize="small">
+  <button mat-icon-button class="cart-button" aria-label="Cart" [matBadge]="cartCount" matBadgeColor="warn" [matBadgeHidden]="cartCount === 0" matBadgeSize="small" (click)="goToCart()">
     <mat-icon>shopping_cart</mat-icon>
   </button>
 
@@ -104,7 +104,7 @@
               <h2 class="product-name">{{ product.name }}</h2>
               <p class="product-description">{{ product.description }}</p>
             </div>
-            <span class="product-price">Rs. {{ product.pricePerUnit}}</span>
+            <span class="product-price">{{ product.pricePerUnit | currency : 'USD' : 'symbol' : '1.2-2' }}</span>
           </mat-card-content>
           
           <mat-card-actions class="product-actions">

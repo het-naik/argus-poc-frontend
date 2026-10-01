@@ -26,4 +26,8 @@ export class CartService {
             { quantity }
         );
     }
+    addToCart(customerId : string, productId : string, quantity: number) {
+        return this.http.post<Cart>(`${this.baseUrl}/carts/customer/${customerId}/items`,
+            { productId, quantity });
+    }
 }

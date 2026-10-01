@@ -31,7 +31,7 @@
 
         <p class="details-description">{{ product.description }}</p>
 
-        <span class="details-price">Rs. {{ product.pricePerUnit }}</span>
+        <span class="details-price">{{ product.pricePerUnit | currency : 'USD' : 'symbol' : '1.2-2' }}</span>
 
       </mat-card-content>
 
