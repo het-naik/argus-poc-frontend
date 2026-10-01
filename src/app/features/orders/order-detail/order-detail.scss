@@ -12,9 +12,20 @@
   align-items: center;
   gap: 12px;
 
-  h1 { margin: 0; font-size: 24px; font-weight: 600; }
-  .order-meta { color: #6b7280; font-size: 14px; }
-  .spacer { flex: 1 1 auto; }
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .order-meta {
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
 }
 
 .status-badge {
@@ -25,15 +36,36 @@
   background: #e5e7eb;
   color: #374151;
 
-  &.status-pending   { background: #fef3c7; color: #92400e; }
+  &.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
   &.status-paid,
-  &.status-confirmed { background: #dbeafe; color: #1e40af; }
-  &.status-shipped   { background: #ede9fe; color: #5b21b6; }
-  &.status-delivered { background: #dcfce7; color: #166534; }
-  &.status-cancelled { background: #fee2e2; color: #991b1b; }
+  &.status-confirmed {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  &.status-shipped {
+    background: #ede9fe;
+    color: #5b21b6;
+  }
+
+  &.status-delivered {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  &.status-cancelled {
+    background: #fee2e2;
+    color: #991b1b;
+  }
 }
 
-mat-card { border-radius: 12px; }
+mat-card {
+  border-radius: 12px;
+}
 
 .info-grid {
   display: grid;
@@ -53,14 +85,30 @@ mat-card { border-radius: 12px; }
       letter-spacing: 0.04em;
       color: #6b7280;
     }
-    mat-icon { font-size: 20px; width: 20px; height: 20px; color: #1976d2; }
-    p { margin: 0 0 6px; color: #1f2937; font-size: 14px; word-break: break-word; }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: #1976d2;
+    }
+
+    p {
+      margin: 0 0 6px;
+      color: #1f2937;
+      font-size: 14px;
+      word-break: break-word;
+    }
   }
 }
 
-mat-card-header { padding: 16px 16px 0; }
+mat-card-header {
+  padding: 16px 16px 0;
+}
 
-.table-scroll { overflow-x: auto; }
+.table-scroll {
+  overflow-x: auto;
+}
 
 .items-table {
   width: 100%;
@@ -72,7 +120,9 @@ mat-card-header { padding: 16px 16px 0; }
     font-size: 13px;
   }
 
-  tr.mat-mdc-row:hover { background: #f3f6fb; }
+  tr.mat-mdc-row:hover {
+    background: #f3f6fb;
+  }
 
   .product-thumb {
     width: 52px;
@@ -83,12 +133,29 @@ mat-card-header { padding: 16px 16px 0; }
     display: block;
     margin: 6px 0;
   }
-  .product-name { display: block; font-weight: 500; }
-  .product-sku  { display: block; font-size: 12px; color: #9ca3af; }
-  .subtotal     { font-weight: 600; }
 
-  .text-right  { text-align: right; }
-  .text-center { text-align: center; }
+  .product-name {
+    display: block;
+    font-weight: 500;
+  }
+
+  .product-sku {
+    display: block;
+    font-size: 12px;
+    color: #9ca3af;
+  }
+
+  .subtotal {
+    font-weight: 600;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+
+  .text-center {
+    text-align: center;
+  }
 }
 
 .totals-breakdown {
@@ -115,7 +182,12 @@ mat-card-header { padding: 16px 16px 0; }
   }
 }
 
-.loading { text-align: center; color: #9ca3af; padding: 48px 0; }
+.loading {
+  text-align: center;
+  color: #9ca3af;
+  padding: 48px 0;
+}
+
 /* Shipping address */
 .address-section {
   .address-card {
@@ -153,11 +225,13 @@ mat-card-header { padding: 16px 16px 0; }
   }
 
   .address-body {
-    font-style: normal;          /* <address> is italic by default */
+    font-style: normal;
+    /* <address> is italic by default */
     display: flex;
     flex-direction: column;
     gap: 4px;
-    min-width: 0;                /* lets long text wrap inside flex */
+    min-width: 0;
+    /* lets long text wrap inside flex */
   }
 
   .address-line {
@@ -189,9 +263,15 @@ mat-card-header { padding: 16px 16px 0; }
   /* Loading skeleton */
   .skeleton {
     border-left-color: #cbd5e1;
-    &:hover { box-shadow: none; transform: none; }
 
-    .address-icon { background: #e5e7eb; }
+    &:hover {
+      box-shadow: none;
+      transform: none;
+    }
+
+    .address-icon {
+      background: #e5e7eb;
+    }
 
     .sk-line {
       display: block;
@@ -202,14 +282,27 @@ mat-card-header { padding: 16px 16px 0; }
       animation: shimmer 1.2s infinite linear;
       margin-bottom: 8px;
 
-      &.w80 { width: 80%; }
-      &.w50 { width: 50%; }
-      &.w30 { width: 30%; }
+      &.w80 {
+        width: 80%;
+      }
+
+      &.w50 {
+        width: 50%;
+      }
+
+      &.w30 {
+        width: 30%;
+      }
     }
   }
 }
 
 @keyframes shimmer {
-  from { background-position: 200% 0; }
-  to   { background-position: -200% 0; }
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
 }

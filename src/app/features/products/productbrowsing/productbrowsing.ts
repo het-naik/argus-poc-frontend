@@ -18,6 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Productservice } from '../productservice';
 import { Router } from '@angular/router';
 import { formatCategory, Product } from '../../../core/interfaces/product';
+import { CartService } from '../../cart/cart.service';
 
 
 
@@ -42,7 +43,7 @@ export class Productbrowsing implements OnInit {
 
   formatCategory = formatCategory;
 
-  constructor(private router : Router, private productService : Productservice, private cdr : ChangeDetectorRef){}
+  constructor(private router : Router, private productService : Productservice, private cdr : ChangeDetectorRef, private cartService : CartService){}
 
   searchTerm = '';
 
@@ -128,9 +129,20 @@ export class Productbrowsing implements OnInit {
     this.router.navigate(['/products', product.productId]);
   }
 
+  goToCart() {
+    this.router.navigate(['/carts/customer/62957df3-9265-44a7-abe9-a5383e0dcf16'])
+  }
+
   addToCart(product : Product) {
-    this.cartCount++;
-    console.log("Added to cart: ", product)
+    this.cartService.addToCart('62957df3-9265-44a7-abe9-a5383e0dcf16', product.productId, 1).subscribe({
+      next : (cart) => {
+        this.cartCount++;
+        console.log("Added to cart: ", product);
+      },
+      error : (err) => {
+        console.error("Failed to add to cart");
+      }
+    });
   }
 
 }

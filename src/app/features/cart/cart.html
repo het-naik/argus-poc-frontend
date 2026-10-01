@@ -16,7 +16,8 @@
 
           <ng-container matColumnDef="pricePerUnit">
             <th mat-header-cell *matHeaderCellDef class="right">Price</th>
-            <td mat-cell *matCellDef="let item" class="right">{{ priceOf(item) }}</td>
+            <td mat-cell *matCellDef="let item" class="right">{{item.pricePerUnit | currency: 'INR' : 'symbol' : '1.2-2'
+              }}</td>
           </ng-container>
 
           <ng-container matColumnDef="quantity">
@@ -45,7 +46,8 @@
           </ng-container>
           <ng-container matColumnDef="subtotal">
             <th mat-header-cell *matHeaderCellDef class="right">Subtotal</th>
-            <td mat-cell *matCellDef="let item" class="right subtotal">{{ subtotal(item) }}</td>
+            <td mat-cell *matCellDef="let item" class="right subtotal">{{ subtotal(item) | currency: 'INR' : 'symbol' :
+              '1.2-2' }}</td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -60,15 +62,61 @@
       </div>
     </div>
 
+    <div class="checkout-col">
+      <mat-card appearance="outlined" class="option-card">
+        <h2 class="card-title">Delivery Address</h2>
+
+        @if (!addresses().length) {
+        <p class="muted">You have no saved addresses.</p>
+        <a mat-stroked-button routerLink="/addresses">
+          <mat-icon>add</mat-icon> Add address
+        </a>
+        } @else {
+        <mat-radio-group class="address-list" [value]="selectedAddressId()"
+          (change)="selectedAddressId.set($event.value)">
+          @for (a of addresses(); track a.addressId) {
+          <mat-radio-button class="address-option" [value]="a.addressId"
+            [class.selected]="selectedAddressId() === a.addressId">
+            <div class="address-text">
+              <span class="addr-line">{{ a.fullAddress }}</span>
+              <span class="addr-sub">{{ a.city }}, {{ a.state }} - {{ a.zipCode }}</span>
+            </div>
+          </mat-radio-button>
+          }
+        </mat-radio-group>
+        }
+      </mat-card>
+      <mat-card appearance="outlined" class="option-card">
+        <h2 class="card-title">Payment Method</h2>
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Select payment method</mat-label>
+          <mat-select [value]="selectedPayment()" (selectionChange)="selectedPayment.set($event.value)">
+            @for (p of paymentMethods; track p.value) {
+            <mat-option [value]="p.value">
+               {{ p.label }}
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </mat-card>
+    </div>
+
     <aside>
       <mat-card appearance="outlined" class="summary">
         <h2 class="card-title">Order Summary</h2>
         <div class="summary-body">
           <div class="row"><span>Items</span><span>{{ itemCount() }}</span></div>
-          <div class="row total"><span>Total</span><span>{{ total() }}</span></div>
-
-
+          <div class="row total">
+            <span>Total</span>
+            <span>{{ total() | currency: 'INR' : 'symbol' : '1.2-2' }}</span>
+          </div>
         </div>
+    <button mat-flat-button color="primary" class="place-order" (click)="placeOrder()">
+  Place Order
+</button>
+        @if (cart()?.cartItems?.length && (!selectedAddressId() || !selectedPayment())) {
+        <p class="hint">Select an address and payment method to continue.</p>
+        }
       </mat-card>
     </aside>
   </div>

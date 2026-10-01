@@ -23,7 +23,11 @@ export class CartService {
     updateQuantity(customerId: string, productId: number, quantity: number) {
         return this.http.patch<Cart>(
             `${this.baseUrl}/carts/customer/${customerId}/items/${productId}`,
-            { quantity } 
+            { quantity }
         );
+    }
+    addToCart(customerId : string, productId : string, quantity: number) {
+        return this.http.post<Cart>(`${this.baseUrl}/carts/customer/${customerId}/items`,
+            { productId, quantity });
     }
 }
