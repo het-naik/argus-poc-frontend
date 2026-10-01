@@ -15,4 +15,7 @@ export class Addressservice {
     getAddressById(addressId: string) {
         return this.http.get<Address>(`${this.baseUrl}/customer/address/${addressId}`);
     }
+    getByCustomerId(customerId: string) {
+        return this.http.get<Address[]>(`${this.baseUrl}/customer/address/get-all/${customerId}`);
+    }
 }

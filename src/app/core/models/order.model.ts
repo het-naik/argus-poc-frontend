@@ -5,6 +5,7 @@ export type RoleType = 'ADMIN' | 'CUSTOMER' | 'SELLER';
 export interface Order{
     orderId:string;
     customerId:string;
+    customerUsername:string;
     orderItems:OrderItem[];
     status:OrderStatus;
     paymentMethod:PaymentMethod;
@@ -44,6 +45,7 @@ export interface CartItem{
     productId:number;
     productName:string;
     quantity:number;
+    pricePerUnit:number;
 }
 export interface AppUser {
   id: string; 

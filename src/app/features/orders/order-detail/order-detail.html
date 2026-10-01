@@ -2,114 +2,114 @@
 
   @if (order(); as o) {
 
-    <header class="page-header">
-      <a mat-icon-button routerLink="/orders" aria-label="Back to orders">
-        <mat-icon>arrow_back</mat-icon>
-      </a>
-      <div>
-        <h1>Order #{{ o.orderId }}</h1>
-        <span class="order-meta">{{ itemCount() }} item{{ itemCount() === 1 ? '' : 's' }}</span>
-      </div>
-      <span class="spacer"></span>
-      <span class="status-badge" [class]="'status-badge ' + statusClass(o.status)">
-        {{ o.status }}
-      </span>
-    </header>
-
-    <mat-card class="summary-card" appearance="outlined">
-      <mat-card-content class="info-grid">
-<div class="info-section address-section">
-  <h3><mat-icon>location_on</mat-icon> Shipping Address</h3>
-
-  @if (address(); as a) {
-    <div class="address-card">
-      <div class="address-icon">
-        <mat-icon>home</mat-icon>
-      </div>
-
-      <address class="address-body">
-        <p class="address-line">{{ a.fullAddress }}</p>
-        <p class="address-region">{{ a.city }}, {{ a.state }}</p>
-        <span class="zip-chip">{{ a.zipCode }}</span>
-      </address>
+  <header class="page-header">
+    <a mat-icon-button routerLink="/orders" aria-label="Back to orders">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <div>
+      <h1>Order #{{ o.orderId }}</h1>
+      <span class="order-meta">{{ itemCount() }} item{{ itemCount() === 1 ? '' : 's' }}</span>
     </div>
-  } @else {
-    <div class="address-card skeleton">
-      <div class="address-icon"></div>
-      <div class="address-body">
-        <span class="sk-line w80"></span>
-        <span class="sk-line w50"></span>
-        <span class="sk-line w30"></span>
-      </div>
-    </div>
-  }
-</div>
-      </mat-card-content>
-    </mat-card>
+    <span class="spacer"></span>
+    <span class="status-badge" [class]="'status-badge ' + statusClass(o.status)">
+      {{ o.status }}
+    </span>
+  </header>
 
-    <mat-card class="table-card" appearance="outlined">
-      <mat-card-header>
-        <mat-card-title>Order Items</mat-card-title>
-      </mat-card-header>
+  <mat-card class="summary-card" appearance="outlined">
+    <mat-card-content class="info-grid">
+      <div class="info-section address-section">
+        <h3><mat-icon>location_on</mat-icon> Shipping Address</h3>
 
-      <mat-card-content>
-        <div class="table-scroll">
-          <table mat-table [dataSource]="o.orderItems || []" class="items-table">
-
-            <ng-container matColumnDef="image">
-              <th mat-header-cell *matHeaderCellDef></th>
-              <td mat-cell *matCellDef="let item">
-                <img [src]="item.imageUrl || 'assets/placeholder.png'" alt="" class="product-thumb">
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Product</th>
-              <td mat-cell *matCellDef="let item">
-                <span class="product-name">{{ item.productName }}</span>
-                @if (item.name) {
-                  <span class="product-sku">{{ item.productName }}</span>
-                }
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="price">
-              <th mat-header-cell *matHeaderCellDef class="text-right">Price</th>
-              <td mat-cell *matCellDef="let item" class="text-right">{{ item.price }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="quantity">
-              <th mat-header-cell *matHeaderCellDef class="text-center">Qty</th>
-              <td mat-cell *matCellDef="let item" class="text-center">{{ item.quantity }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="subtotal">
-              <th mat-header-cell *matHeaderCellDef class="text-right">Subtotal</th>
-              <td mat-cell *matCellDef="let item" class="text-right subtotal">
-                {{ item.price * item.quantity  }}
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-        </div>
-
-        <div class="totals-breakdown">
-          <div class="total-row">
-            <span>Items</span>
-            <span>{{ itemCount() }}</span>
+        @if (address(); as a) {
+        <div class="address-card">
+          <div class="address-icon">
+            <mat-icon>home</mat-icon>
           </div>
-          <div class="total-row grand-total">
-            <span>Grand Total</span>
-            <span>{{ total()  }}</span>
+          <address class="address-body">
+            <p class="address-line">{{ a.fullAddress }}</p>
+            <p class="address-region">{{ a.city }}, {{ a.state }}</p>
+            <span class="zip-chip">{{ a.zipCode }}</span>
+          </address>
+        </div>
+        } @else {
+        <div class="address-card skeleton">
+          <div class="address-icon"></div>
+          <div class="address-body">
+            <span class="sk-line w80"></span>
+            <span class="sk-line w50"></span>
+            <span class="sk-line w30"></span>
           </div>
         </div>
-      </mat-card-content>
-    </mat-card>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="table-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Order Items</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="table-scroll">
+        <table mat-table [dataSource]="o.orderItems || []" class="items-table">
+
+          <ng-container matColumnDef="image">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let item">
+              <img [src]="item.imageUrl || 'assets/placeholder.png'" alt="" class="product-thumb">
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Product</th>
+            <td mat-cell *matCellDef="let item">
+              <span class="product-name">{{ item.productName }}</span>
+              @if (item.name) {
+              <span class="product-sku">{{ item.productName }}</span>
+              }
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef class="text-right">Price</th>
+            <td mat-cell *matCellDef="let item" class="text-right">{{ item.price | currency: 'INR' : 'symbol' : '1.2-2'
+              }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Qty</th>
+            <td mat-cell *matCellDef="let item" class="text-center">{{ item.quantity }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="subtotal">
+            <th mat-header-cell *matHeaderCellDef class="text-right">Subtotal</th>
+            <td mat-cell *matCellDef="let item" class="text-right subtotal">
+              {{ item.price * item.quantity | currency: 'INR' : 'symbol' : '1.2-2' }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+
+      <div class="totals-breakdown">
+        <div class="total-row">
+          <span>Items</span>
+          <span>{{ itemCount() }}</span>
+        </div>
+        <div class="total-row grand-total">
+          <span>Grand Total</span>
+          <span>{{ total() | currency: 'INR' : 'symbol' : '1.2-2' }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 
   } @else {
-    <p class="loading">Loading order...</p>
+  <p class="loading">Loading order...</p>
   }
 
 </div>
