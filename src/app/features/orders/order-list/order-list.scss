@@ -1,0 +1,79 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  h2 { margin: 0; font-size: 24px; font-weight: 600; }
+  .subtitle { margin: 4px 0 0; color: #6b7280; font-size: 14px; }
+}
+
+.table-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  max-height: 70vh;
+}
+
+table { width: 100%; }
+
+th.mat-mdc-header-cell {
+  background: #f9fafb;
+  color: #374151;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+tr.mat-mdc-row {
+  transition: background 0.15s ease;
+  &:hover { background: #f3f6fb; }
+}
+
+.center { text-align: center; }
+.right  { text-align: right; }
+.total  { font-weight: 600; }
+
+.order-link {
+  color: #1976d2;
+  font-weight: 500;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #e5e7eb;
+  color: #374151;
+
+  &.status-pending   { background: #fef3c7; color: #92400e; }
+  &.status-paid,
+  &.status-confirmed { background: #dbeafe; color: #1e40af; }
+  &.status-shipped   { background: #ede9fe; color: #5b21b6; }
+  &.status-delivered { background: #dcfce7; color: #166534; }
+  &.status-cancelled { background: #fee2e2; color: #991b1b; }
+}
+
+.empty {
+  text-align: center;
+  padding: 48px 16px;
+  color: #9ca3af;
+
+  mat-icon { font-size: 40px; width: 40px; height: 40px; }
+  p { margin: 8px 0 0; }
+}

@@ -1,0 +1,123 @@
+.cart-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.page-title {
+  margin: 0 0 16px;
+  font-size: 24px;
+  font-weight: 600;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  align-items: start;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.table-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table-scroll { overflow-x: auto; }
+
+table { width: 100%; }
+
+th.mat-mdc-header-cell {
+  background: #f9fafb;
+  color: #374151;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+tr.mat-mdc-row {
+  transition: background 0.15s ease;
+  &:hover { background: #f3f6fb; }
+}
+
+td.mat-mdc-cell { padding-top: 8px; padding-bottom: 8px; }
+
+.right  { text-align: right; }
+.center { text-align: center; }
+
+.product-name { font-weight: 500; color: #111827; }
+.subtotal     { font-weight: 600; }
+
+.qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  padding: 0 4px;
+
+  span {
+    min-width: 28px;
+    text-align: center;
+    font-weight: 600;
+  }
+}
+
+.empty {
+  text-align: center;
+  padding: 48px 16px !important;
+  color: #9ca3af;
+}
+
+mat-card.summary {
+  border-radius: 12px;
+  position: sticky;
+  top: 16px;
+
+  .card-title {
+    margin: 0;
+    padding: 16px 16px 4px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .summary-body {
+    padding: 8px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #6b7280;
+  }
+
+  .total {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .place-btn {
+    margin-top: 8px;
+    height: 44px;
+  }
+}
+.cart-actions {
+  display: flex;
+  justify-content: center;   // centered
+  margin: 24px 0;
+
+  button mat-icon {
+    margin-right: 6px;
+  }
+}
