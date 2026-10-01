@@ -30,7 +30,6 @@ export class EditProfileDialog {
   saving = signal(false);
   errorMessage = signal<string | null>(null);
 
-  // validators mirror UpdateProfileRequestDTO
   form = this.fb.nonNullable.group({
     username: [
       this.user.username,

@@ -3,6 +3,7 @@ import { Product } from '../../../core/interfaces/product';
 import { AuthService } from '../../auth/auth-service';
 import { ProductTable } from '../../../shared/components/product-table/product-table';
 import { ProfileCard } from '../../../shared/components/profile-card/profile-card';
+import { Productservice } from '../../products/productservice';
 
 @Component({
   selector: 'app-seller-dashboard',
@@ -13,7 +14,16 @@ import { ProfileCard } from '../../../shared/components/profile-card/profile-car
 export class SellerDashboard {
   products = signal<Product[]>([]);
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private productService: Productservice) {}
+
+  ngOnInit() {
+    this.productService.getProducts(0, 10).subscribe({
+      next: (page) => {
+        this.products.set(page.content); 
+      },
+      error: (err) => console.error('Error fetching products', err)
+    });
+  }
 
   onProductUpdated(updated: Product) {
     this.products.update((list) =>
