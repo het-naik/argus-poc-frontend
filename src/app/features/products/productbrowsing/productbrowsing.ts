@@ -15,10 +15,13 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { Productservice } from '../productservice';
 import { Router } from '@angular/router';
 import { formatCategory, Product } from '../../../core/interfaces/product';
 import { CartService } from '../../cart/cart.service';
+import { AuthService } from '../../auth/auth-service';
+import { RoleType } from '../../../core/interfaces/user';
 
 
 
@@ -32,7 +35,7 @@ export type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'newest';
 
 @Component({
   imports: [CommonModule, FormsModule, MatToolbarModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatCardModule,
-    MatCheckboxModule, MatRadioModule, MatSliderModule, MatDividerModule, MatPaginatorModule, MatBadgeModule, MatProgressSpinnerModule],
+    MatCheckboxModule, MatRadioModule, MatSliderModule, MatDividerModule, MatPaginatorModule, MatBadgeModule, MatProgressSpinnerModule, MatSnackBarModule],
   selector: 'app-productbrowsing',
   styleUrl: './productbrowsing.scss',
   templateUrl: './productbrowsing.html',
@@ -43,26 +46,27 @@ export class Productbrowsing implements OnInit {
 
   formatCategory = formatCategory;
 
-  constructor(private router : Router, private productService : Productservice, private cdr : ChangeDetectorRef, private cartService : CartService){}
+  constructor(private router : Router, private productService : Productservice, private cdr : ChangeDetectorRef, private cartService : CartService, private snackBar : MatSnackBar, private authService : AuthService){}
 
   searchTerm = '';
 
   cartCount = 1;
 
   sortOptions : {value : SortOption, label : String}[] = [
-    {value : 'featured', label : 'Featured'},
     {value : 'price-asc', label : 'Price: Low to High'},
     {value : 'price-desc', label : 'Price: High to Low'},
     {value : 'newest', label : 'Newest arrival'},
   ];
 
-  selectedSort : SortOption = 'featured';
+  selectedSort : SortOption = 'price-asc';
 
   categories : CategoryFilter[] = [
     {label : 'Fashion & Apparel', checked : true},
-    {label : 'Electronics', checked : false},
-    {label : 'Health & Beauty', checked : false},
-    {label : 'Food', checked : false},
+    {label : 'Electronics & Technology', checked : false},
+    {label : 'Home & Living', checked : false},
+    {label : 'Health, Beauty, & Personal Care', checked : false},
+    {label : 'Sports, Hobbies, & Leisure', checked : false},
+    {label : 'Essentials, Food, & Grocery', checked : false},
   ];
 
   minPrice = 0;
@@ -92,7 +96,8 @@ export class Productbrowsing implements OnInit {
       next : (response) => {
         console.log('API response: ', response);
         console.log('Products array: ', response.content);
-        this.products = response.content;
+        const term = this.searchTerm.trim().toLowerCase();
+        this.products = response.content.filter(p => p.stock > 0).filter(p => !term || p.name.toLowerCase().includes(term));
         this.totalItems = response.totalElements;
         this.isLoading = false;
         this.cdr.detectChanges();
@@ -104,6 +109,13 @@ export class Productbrowsing implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  onSearchChange(value : string) : void {
+    this.searchTerm = value;
+    this.pageIndex = 0;
+    this.fetchProducts();
+    this.cdr.detectChanges();
   }
 
 
@@ -119,7 +131,7 @@ export class Productbrowsing implements OnInit {
     this.maxPrice = this.priceRangeLimit;
     this.inStockOnly = false;
     this.preOrderOnly = false;
-    this.selectedSort = 'featured';
+    this.selectedSort = 'price-asc';
     this.pageIndex = 0;
     this.fetchProducts();
   }
@@ -129,18 +141,37 @@ export class Productbrowsing implements OnInit {
     this.router.navigate(['/products', product.productId]);
   }
 
+  showCartIcon() : boolean {
+    const role = this.authService.getUser().role;
+    return (role !== RoleType.SELLER && role !== RoleType.ADMIN);
+  }
+
   goToCart() {
-    this.router.navigate(['/carts/customer/62957df3-9265-44a7-abe9-a5383e0dcf16'])
+    const customerId = this.authService.getUser().id;
+    this.router.navigate(['/carts/customer', customerId]);
   }
 
   addToCart(product : Product) {
-    this.cartService.addToCart('62957df3-9265-44a7-abe9-a5383e0dcf16', product.productId, 1).subscribe({
+    const customerId = this.authService.getUser().id;
+    this.cartService.addToCart(customerId, product.productId, 1).subscribe({
       next : (cart) => {
         this.cartCount++;
         console.log("Added to cart: ", product);
+        this.snackBar.open('Item successfully added to cart', 'Close', {
+          duration : 3000,
+          horizontalPosition : 'end',
+          verticalPosition : 'top',
+          panelClass : ['success-snackbar']
+        });
       },
       error : (err) => {
         console.error("Failed to add to cart");
+        this.snackBar.open('Failed to add item to cart', 'Close', {
+          duration : 3000,
+          horizontalPosition : 'end',
+          verticalPosition : 'top',
+          panelClass : ['error-snackbar']
+        });
       }
     });
   }

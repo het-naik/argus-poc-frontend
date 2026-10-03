@@ -8,10 +8,10 @@ export class AuthService {
   private userService = inject(UserService);
 
   private readonly _user = signal<User>({
-    id: '3f8b1a2c-7d4e-4b6a-9f8e-1c2d3e4f5a6b',
-    username: 'johndoe_dev',
+    id: '88c6dc18-755b-4c41-9dd9-6f6c1cc6ba8e',
+    username: 'john_doe',
     email: 'john.doe@example.com',
-    role: RoleType.SELLER,
+    role: RoleType.CUSTOMER,
   });
 
   readonly user = this._user.asReadonly();
