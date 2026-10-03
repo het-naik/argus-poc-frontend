@@ -3,12 +3,14 @@
 
   <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
     <mat-icon matPrefix>search</mat-icon>
-    <input matInput type="search" placeholder="Search products" [(ngModel)]="searchTerm" name="search"/>
+    <input matInput type="search" placeholder="Search products" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" name="search"/>
   </mat-form-field>
 
-  <button mat-icon-button class="cart-button" aria-label="Cart" [matBadge]="cartCount" matBadgeColor="warn" [matBadgeHidden]="cartCount === 0" matBadgeSize="small" (click)="goToCart()">
-    <mat-icon>shopping_cart</mat-icon>
-  </button>
+  @if(showCartIcon()) {
+    <button mat-icon-button class="cart-button" aria-label="Cart" [matBadge]="cartCount" matBadgeColor="warn" [matBadgeHidden]="cartCount === 0" matBadgeSize="small" (click)="goToCart()">
+      <mat-icon>shopping_cart</mat-icon>
+    </button>
+  }
 
 </mat-toolbar>
 
@@ -109,7 +111,9 @@
           
           <mat-card-actions class="product-actions">
               <button mat-stroked-button color="primary" (click)="viewDetails(product)">View Details</button>
-              <button mat-flat-button color="primary" (click)="addToCart(product)">Add to Cart</button>
+              @if(showCartIcon()) {
+                <button mat-flat-button color="primary" (click)="addToCart(product)">Add to Cart</button>
+              }
           </mat-card-actions>
         </mat-card>
       </div>
