@@ -130,11 +130,11 @@ export class Productbrowsing implements OnInit {
   }
 
   goToCart() {
-    this.router.navigate(['/carts/customer/62957df3-9265-44a7-abe9-a5383e0dcf16'])
+    this.router.navigate(['/carts/customer/9d6f2130-97ba-4791-a943-019a5f07f1b8'])
   }
 
   addToCart(product : Product) {
-    this.cartService.addToCart('62957df3-9265-44a7-abe9-a5383e0dcf16', product.productId, 1).subscribe({
+    this.cartService.addToCart('9d6f2130-97ba-4791-a943-019a5f07f1b8', product.productId, 1).subscribe({
       next : (cart) => {
         this.cartCount++;
         console.log("Added to cart: ", product);
