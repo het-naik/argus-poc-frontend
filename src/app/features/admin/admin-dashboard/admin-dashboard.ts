@@ -7,10 +7,11 @@ import { ProductTable } from '../../../shared/components/product-table/product-t
 import { ProfileCard } from '../../../shared/components/profile-card/profile-card';
 import { UserTable } from '../../../shared/components/user-table/user-table';
 import { UserService } from '../../../shared/services/user-service';
+import { AdminAnalytics } from '../admin-analytics/admin-analytics/admin-analytics';
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [MatTabsModule, ProductTable, UserTable, ProfileCard],
+  imports: [MatTabsModule, ProductTable, UserTable, ProfileCard, AdminAnalytics],
   styleUrl: './admin-dashboard.scss',
   templateUrl: './admin-dashboard.html',
 })

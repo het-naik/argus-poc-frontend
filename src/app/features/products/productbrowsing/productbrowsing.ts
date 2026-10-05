@@ -50,8 +50,6 @@ export class Productbrowsing implements OnInit {
 
   searchTerm = '';
 
-  cartCount = 1;
-
   sortOptions : {value : SortOption, label : String}[] = [
     {value : 'price-asc', label : 'Price: Low to High'},
     {value : 'price-desc', label : 'Price: High to Low'},
@@ -155,7 +153,6 @@ export class Productbrowsing implements OnInit {
     const customerId = this.authService.getUser().id;
     this.cartService.addToCart(customerId, product.productId, 1).subscribe({
       next : (cart) => {
-        this.cartCount++;
         console.log("Added to cart: ", product);
         this.snackBar.open('Item successfully added to cart', 'Close', {
           duration : 3000,
