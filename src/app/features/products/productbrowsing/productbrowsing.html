@@ -7,7 +7,7 @@
   </mat-form-field>
 
   @if(showCartIcon()) {
-    <button mat-icon-button class="cart-button" aria-label="Cart" [matBadge]="cartCount" matBadgeColor="warn" [matBadgeHidden]="cartCount === 0" matBadgeSize="small" (click)="goToCart()">
+    <button mat-icon-button class="cart-button" (click)="goToCart()">
       <mat-icon>shopping_cart</mat-icon>
     </button>
   }
@@ -86,49 +86,55 @@
     <!-- Product grid -->
     <section class="results">
 
-      <div class="state-message" *ngIf="isLoading">
-        <mat-spinner diameter="40"></mat-spinner>
-      </div>
+      @if(isLoading) {
+        <div class="state-message">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+      }
 
-      <div class="state-message" *ngIf="errorMessage && !isLoading">
-        <p>{{ errorMessage }}</p>
-        <button mat-button color="primary" (click)="fetchProducts()">Retry</button>
-      </div>
+      @if(errorMessage && !isLoading) {
+        <div class="state-message">
+          <p>{{ errorMessage }}</p>
+          <button mat-button color="primary" (click)="fetchProducts()">Retry</button>
+        </div>
+      }
 
-      <div class="product-grid" *ngIf="!isLoading && !errorMessage">
-        <mat-card *ngFor="let product of products" class="product-card">
-          <div class="product-image">
-            <img [src]="product.productImageUrl" [alt]="product.name" />
-          </div>
-
-          <mat-card-content class="product-info">
-            <div>
-              <h2 class="product-name">{{ product.name }}</h2>
-              <p class="product-description">{{ product.description }}</p>
+      @if(!isLoading && !errorMessage) {
+        <div class="product-grid">
+          <mat-card *ngFor="let product of products" class="product-card">
+            <div class="product-image">
+              <img [src]="product.productImageUrl" [alt]="product.name" />
             </div>
-            <span class="product-price">{{ product.pricePerUnit | currency : 'USD' : 'symbol' : '1.2-2' }}</span>
-          </mat-card-content>
-          
-          <mat-card-actions class="product-actions">
-              <button mat-stroked-button color="primary" (click)="viewDetails(product)">View Details</button>
-              @if(showCartIcon()) {
-                <button mat-flat-button color="primary" (click)="addToCart(product)">Add to Cart</button>
-              }
-          </mat-card-actions>
-        </mat-card>
-      </div>
 
-      <mat-paginator
-      *ngIf="!isLoading && !errorMessage"
-        class="paginator"
-        [length]="totalItems"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="[20, 50, 100]"
-        [pageIndex]="pageIndex"
-        (page)="onPageChange($event)"
-        showFirstLastButtons
-      >
-      </mat-paginator>
+            <mat-card-content class="product-info">
+              <div>
+                <h2 class="product-name">{{ product.name }}</h2>
+                <p class="product-description">{{ product.description }}</p>
+              </div>
+              <span class="product-price">{{ product.pricePerUnit | currency : 'USD' : 'symbol' : '1.2-2' }}</span>
+            </mat-card-content>
+            
+            <mat-card-actions class="product-actions">
+                <button mat-stroked-button color="primary" (click)="viewDetails(product)">View Details</button>
+                @if(showCartIcon()) {
+                  <button mat-flat-button color="primary" (click)="addToCart(product)">Add to Cart</button>
+                }
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      }
+
+      @if(!isLoading && !errorMessage) {
+        <mat-paginator
+          class="paginator"
+          [length]="totalItems"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[20, 50, 100]"
+          [pageIndex]="pageIndex"
+          (page)="onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      }
 
     </section>
 

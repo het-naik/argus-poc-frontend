@@ -1,0 +1,147 @@
+$max-width: 1280px;
+$muted-text: #5e5e5e;
+$surface: #f9f9f9;
+$surface-white: #ffffff;
+$error-color: #c62828;
+
+:host {
+  display: block;
+  background: $surface;
+  min-height: 100vh;
+}
+
+.page {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0.25rem 0 0;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-card {
+  border-radius: 4px;
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.stat-label {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $muted-text;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 600;
+  display: block;
+}
+
+.most-sold-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.most-sold-image {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #eeeeee;
+  flex-shrink: 0;
+}
+
+.most-sold-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.most-sold-price {
+  font-size: 14px;
+  color: $muted-text;
+  margin: 0.25rem 0 0;
+}
+
+.section-divider {
+  margin: 1.5rem 0;
+}
+
+.dashboard-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+
+.list-card {
+  border-radius: 4px;
+}
+
+.list-item-value {
+  font-weight: 600;
+}
+
+.category-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.category-group-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+
+.state-message {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 0;
+}
+
+.state-error {
+  color: $error-color;
+  font-size: 14px;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.empty-message {
+  color: $muted-text;
+  font-size: 14px;
+  padding: 1rem;
+  text-align: center;
+  margin: 0;
+}

@@ -1,6 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, InjectionToken } from "@angular/core";
 import { Order, PaymentMethod } from "../../../core/models/order.model";
+import { Observable } from "rxjs";
+import { SalesByCategoryResponse, TopProductsByCategoryResponse, TotalSalesResponse } from "../../../core/interfaces/analytics";
+import { Product } from "../../../core/interfaces/product";
+import { User } from "../../../core/interfaces/user";
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL', {
     providedIn: 'root',
@@ -25,5 +29,27 @@ export class OrderService {
             `${this.baseUrl}/orders/customer/${customerId}`,
             payload
         );
+    }
+
+    // Services for analytics related APIs
+
+    getTotalSales() : Observable<TotalSalesResponse> {
+        return this.http.get<TotalSalesResponse>(`${this.baseUrl}/orders/sales/total`);
+    }
+
+    getMostSoldProduct() : Observable<Product> {
+        return this.http.get<Product>(`${this.baseUrl}/orders/products/most-sold`);
+    }
+
+    getTotalSalesByCategory() : Observable<SalesByCategoryResponse> {
+        return this.http.get<SalesByCategoryResponse>(`${this.baseUrl}/orders/sales/category`);
+    }
+
+    getTopProductsByCategory() : Observable<TopProductsByCategoryResponse> {
+        return this.http.get<TopProductsByCategoryResponse>(`${this.baseUrl}/orders/products/most-sold/category`);
+    }
+
+    getTopSellers() : Observable<User[]> {
+        return this.http.get<User[]>(`${this.baseUrl}/orders/topsellers`);
     }
 }
