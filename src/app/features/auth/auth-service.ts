@@ -8,8 +8,8 @@ export class AuthService {
   private userService = inject(UserService);
 
   private readonly _user = signal<User>({
-    id: 'dd6a6e54-1846-43c9-b19d-708f7d3c3eb7',
-    username: 'johndoe_dev',
+    id: 'c73a8595-4bfc-4603-ad5a-45ca55b2d9ad',
+    username: 'john_doe',
     email: 'john.doe@example.com',
     role: RoleType.SELLER,
   });
@@ -30,11 +30,11 @@ export class AuthService {
     console.log('changed role');
   }
 
-  login(payload: any) : Observable<any>{
-    return new Observable();
+  isLoggedIn() {
+    return this._user() !== null;
   }
 
-  register(payload: any) : Observable<any>{
-    return new Observable();
+  hasRole(roles : RoleType[]) {
+    return roles.includes(this._user().role);
   }
 }
