@@ -1,4 +1,7 @@
 <div class="flex flex-col justify-center w-full">
   <app-profile-card></app-profile-card>
+  <div class="flex justify-end px-4 py-2">
+    <button mat-flat-button type="button" (click)="openAddDialog()">Add product</button>
+  </div>
   <app-product-table [products]="products()" (productUpdated)="onProductUpdated($event)" />
 </div>
