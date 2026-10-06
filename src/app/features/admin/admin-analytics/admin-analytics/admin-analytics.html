@@ -1,0 +1,125 @@
+<div class="page">
+
+  <div class="page-header">
+    <h1 class="page-title">Analytics Dashboard</h1>
+  </div>
+
+  <div class="dashboard-grid">
+
+    <!-- Total Sales -->
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-header">
+          <span class="stat-label">Total Sales</span>
+        </div>
+
+        @if(totalSalesError) {
+            <p class="state-error">{{ totalSalesError }}</p>
+        }
+
+        @if(!totalSalesError) {
+            <span class="stat-value">{{ totalSales | currency : 'USD' : 'symbol' : '1.2-2' }}</span>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Most Sold Product -->
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-header">
+          <span class="stat-label">Most Sold Product</span>
+        </div>
+
+        @if(mostSoldProductError) {
+            <p class="state-error">{{ mostSoldProductError }}</p>
+        }
+
+        @if(mostSoldProduct && !mostSoldProductError) {
+            <div class="most-sold-content">
+                <img class="most-sold-image" [src]="mostSoldProduct.productImageUrl" [alt]="mostSoldProduct.name" />
+                <div>
+                    <p class="most-sold-name">{{ mostSoldProduct.name }}</p>
+                    <p class="most-sold-price">{{ mostSoldProduct.pricePerUnit | currency : 'USD' : 'symbol' : '1.2-2' }}</p>
+                </div>
+            </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <mat-divider class="section-divider"></mat-divider>
+
+  <!-- Sales by Category -->
+  <section class="dashboard-section">
+    <h2 class="section-title">Sales by Category</h2>
+
+    @if(salesByCategoryError) {
+        <p class="state-error">{{ salesByCategoryError }}</p>
+    }
+
+    @if(!salesByCategoryError) {
+        <mat-card class="list-card">
+            <mat-list>
+                <mat-list-item *ngFor="let entry of salesByCategory">
+                <span matListItemTitle>{{ formatCategory(entry.category) }}</span>
+                <span matListItemMeta class="list-item-value">{{ entry.total }}</span>
+                </mat-list-item>
+            </mat-list>
+            @if(salesByCategory.length === 0) {
+                <p class="empty-message">No category-wise sales data.</p>
+            }
+        </mat-card>
+    }
+  </section>
+
+  <!-- Top Products by Category -->
+  <section class="dashboard-section">
+    <h2 class="section-title">Top Products by Category</h2>
+
+    @if(topProductsByCategoryError) {
+        <p class="state-error">{{ topProductsByCategoryError }}</p>
+    }
+
+    @if(!topProductsByCategoryError) {
+        <div class="category-groups">
+            <mat-card class="list-card" *ngFor="let group of topProductsByCategory">
+                <mat-card-content>
+                <h3 class="category-group-title">{{ formatCategory(group.category) }}</h3>
+                <mat-chip-set>
+                    <mat-chip *ngFor="let product of group.products">{{ product.name }}</mat-chip>
+                </mat-chip-set>
+                </mat-card-content>
+            </mat-card>
+            @if(topProductsByCategory.length === 0) {
+                <p class="empty-message">No data available.</p>
+            }
+        </div>
+    }
+  </section>
+
+  <!-- Top Sellers -->
+  <section class="dashboard-section">
+    <h2 class="section-title">Top Sellers</h2>
+
+    @if(topSellersError) {
+        <p class="state-error">{{ topSellersError }}</p>
+    }
+
+    @if(!topSellersError) {
+        <mat-card class="list-card">
+            <mat-list>
+                <mat-list-item *ngFor="let seller of topSellers">
+                <mat-icon matListItemIcon>person</mat-icon>
+                <span matListItemTitle>{{ seller.username }}</span>
+                <span matListItemLine>{{ seller.email }}</span>
+                </mat-list-item>
+            </mat-list>
+            @if(topSellers.length === 0) {
+                <p class="empty-message">No seller data yet.</p>
+            }
+        </mat-card>
+    }
+  </section>
+
+</div>

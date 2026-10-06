@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from '../../features/auth/auth-service';
+import { RoleType } from '../../core/interfaces/user';
 
 
 @Component({
@@ -13,7 +15,28 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class Header {
 
-  constructor(private router : Router) {}
+  constructor(private router : Router, private authService : AuthService) {}
+
+  showDashboardLink = computed(() => {
+    const role = this.authService.getUser().role;
+    return (role === RoleType.SELLER || role === RoleType.ADMIN);
+  });
+
+  showOrdersLink = computed(() => {
+    const role = this.authService.getUser().role;
+    return (role === RoleType.CUSTOMER);
+  });
+
+  dashboardRoute = computed(() => {
+    const role = this.authService.getUser().role;
+    if(role === RoleType.SELLER) {
+      return '/seller';
+    }  
+    if(role === RoleType.ADMIN) {
+      return '/admin';
+    } 
+    return '/';
+  });
 
   logout() {
     console.log("Logging out");

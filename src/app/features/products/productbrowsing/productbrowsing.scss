@@ -212,3 +212,41 @@ $surface-white: #ffffff;
   gap: 1rem;
   padding: 3rem 0;
 }
+
+::ng-deep .success-snackbar {
+  background-color: #ffffff !important;
+  border: 2px solid #2e7d32 !important;
+  border-radius: 4px;
+
+  .mdc-snackbar__surface {
+    background-color: #ffffff !important;
+  }
+
+  .mdc-snackbar__label {
+    color: #2e7d32 !important;
+    font-weight: 500;
+  }
+
+  .mat-mdc-snack-bar-action {
+    color: #2e7d32 !important;
+  }
+}
+
+::ng-deep .error-snackbar {
+  background-color: #ffffff !important;
+  border: 2px solid #c62828 !important;
+  border-radius: 4px;
+
+  .mdc-snackbar__surface {
+    background-color: #ffffff !important;
+  }
+
+  .mdc-snackbar__label {
+    color: #c62828 !important;
+    font-weight: 500;
+  }
+
+  .mat-mdc-snack-bar-action {
+    color: #c62828 !important;
+  }
+}
