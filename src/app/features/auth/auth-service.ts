@@ -8,7 +8,7 @@ export class AuthService {
   private userService = inject(UserService);
 
   private readonly _user = signal<User>({
-    id: '3f8b1a2c-7d4e-4b6a-9f8e-1c2d3e4f5a6b',
+    id: 'dd6a6e54-1846-43c9-b19d-708f7d3c3eb7',
     username: 'johndoe_dev',
     email: 'john.doe@example.com',
     role: RoleType.SELLER,
@@ -28,5 +28,13 @@ export class AuthService {
 
   updateUserRole(id: string, role: RoleType) {
     console.log('changed role');
+  }
+
+  login(payload: any) : Observable<any>{
+    return new Observable();
+  }
+
+  register(payload: any) : Observable<any>{
+    return new Observable();
   }
 }
