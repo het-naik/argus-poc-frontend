@@ -13,6 +13,9 @@ import { OrderService } from '../orders/order-list/order.service';
 import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect, MatOption } from '@angular/material/select';
+import { MatDialog } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { AddAddressDialog } from './add-address-dialog/add-address-dialog';
 
 @Component({
   imports: [MatTableModule, MatRowDef, RouterLink, CurrencyPipe, MatHeaderCellDef, MatCellDef, MatHeaderRowDef, MatChip, MatCard, MatIconModule, MatRadioGroup, MatRadioButton, MatFormField, MatSelect, MatLabel, MatOption],
@@ -47,7 +50,7 @@ export class CartComponent implements OnInit {
       const customerId = this.cart()?.customerId;
       if (customerId && customerId !== this.loadedForCustomer) {
         this.loadedForCustomer = customerId;
-        this.loadAddresses(customerId);
+      
       }
     });
   }
@@ -68,6 +71,7 @@ export class CartComponent implements OnInit {
     if (customerId) {
       this.customerId = customerId;
       this.fetchDetails(customerId);
+        this.loadAddresses(customerId);
     }
   }
   fetchDetails(customerId: string) {
@@ -109,6 +113,18 @@ export class CartComponent implements OnInit {
       });
   }
 
+  private dialog = inject(MatDialog);
+
+openAddAddress() {
+  this.dialog
+    .open(AddAddressDialog, { data: { customerId: this.customerId }, width: '480px' })
+    .afterClosed()
+    .subscribe((created?: Address) => {
+      if (!created) return;
+      this.addresses.update((list) => [...list, created]);
+      this.selectedAddressId.set(created.addressId);
+    });
+}
   //helper
   subtotal(item: CartItem): number {
     return item.pricePerUnit * item.quantity;

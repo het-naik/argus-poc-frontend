@@ -15,7 +15,7 @@ import { RoleType } from '../../core/interfaces/user';
 })
 export class Header {
 
-  constructor(private router : Router, private authService : AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
   showDashboardLink = computed(() => {
     const role = this.authService.getUser().role;
@@ -29,17 +29,15 @@ export class Header {
 
   dashboardRoute = computed(() => {
     const role = this.authService.getUser().role;
-    if(role === RoleType.SELLER) {
+    if (role === RoleType.SELLER) {
       return '/seller';
-    }  
-    if(role === RoleType.ADMIN) {
+    }
+    if (role === RoleType.ADMIN) {
       return '/admin';
-    } 
+    }
     return '/';
   });
-
   logout() {
-    console.log("Logging out");
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']).then(() => this.authService.logout());
   }
 }

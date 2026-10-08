@@ -3,12 +3,14 @@ import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
-import { map, of, switchMap } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
+import { RouterLink } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
 
 import { OrderService } from './order.service';
 import { Order, getTotal } from '../../../core/models/order.model';
-import { RouterLink } from '@angular/router';
-import { MatIcon } from '@angular/material/icon';
+import { RoleType } from '../../../core/interfaces/user';
+import { AuthService } from '../../auth/auth-service';
 
 @Component({
   selector: 'app-order-list',
@@ -17,12 +19,13 @@ import { MatIcon } from '@angular/material/icon';
   styleUrl: './order-list.scss',
 })
 export class OrderList {
-  
   private orderService = inject(OrderService);
+  private authService = inject(AuthService);
 
-  // we need to get from authenticated user
-  isAdmin = true;
-    displayedColumns: string[] = [
+
+  isAdmin = this.authService.role() === RoleType.ADMIN;
+
+  displayedColumns: string[] = [
     'orderId',
     ...(this.isAdmin ? ['customerId'] : []),
     'orderItems',
@@ -31,36 +34,32 @@ export class OrderList {
     'status',
   ];
 
-  //we need to get logged in customer
-  private customer = {
-    "id": "210a317b-9627-4a82-abfe-1e0558e78bfc",
-    "username": "john_doe",
-    "email": "john.doe@example.com",
-    "password": "securePass2026",
-    "role": "CUSTOMER"
-  };
+  orders = toSignal(this.loadOrders(), { initialValue: [] as Order[] });
 
-  //benefit is automatically subscribes and unsubscribes to data by signal
-  //swictch map helps to avoid emmory leaks and instantaneour event by user are deleted
-  orders = toSignal(
-    of(this.isAdmin).pipe(
-      switchMap((admin) => {
-        if (admin) {
-          return this.orderService.getAll();
-        } else {
-          const customerId = this.customer.id;
-          return this.orderService.getByCustomerId(customerId);
-        }
+  private loadOrders() {
+    const customerId = this.authService.userId();
+
+    if (!this.isAdmin && !customerId) {
+      return of([] as Order[]);
+    }
+
+    const request$ = this.isAdmin
+      ? this.orderService.getAll()
+      : this.orderService.getByCustomerId(customerId!);
+
+    return request$.pipe(
+      map((response: any) => (response.content ?? response) as Order[]),
+      catchError((err) => {
+        console.error('Failed to load orders', err);
+        return of([] as Order[]);
       }),
-      map((response: any) => (response.content ?? response) as Order[])
-    ),
-    { initialValue: [] as Order[] }
-  );
+    );
+  }
 
-//helper methods
   countTotal(o: Order): number {
     return getTotal(o);
   }
+
   statusClass(status: string): string {
     return 'status-' + (status ?? 'unknown').toLowerCase();
   }

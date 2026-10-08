@@ -31,7 +31,7 @@ export class SellerDashboard implements OnInit {
   }
 
   private loadProducts() {
-    this.productService.getProducts(0, 10).subscribe({
+    this.productService.getProductsBySeller(this.authService.getUser().id ,0, 10).subscribe({
       next: (page) => this.products.set(page.content),
       error: (err) => console.error('Error fetching products', err),
     });
