@@ -27,7 +27,7 @@ export const routes: Routes = [
   { path: 'products/:id', component: Productdetails },
   { path: 'seller', component: SellerDashboard },
   { path: 'admin', component: AdminDashboard },
-  { path: 'log-in', component: Login },
-  { path: 'sign-up', component: Register },
-  { path: '**', component: Login },
+{ path: 'login', component: Login },
+{ path: 'register', component: Register },
+{ path: '**', redirectTo: '' },
 ];

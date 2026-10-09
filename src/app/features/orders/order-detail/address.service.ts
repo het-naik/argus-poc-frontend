@@ -7,6 +7,16 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL', {
     factory: () => 'http://localhost:8080'
 });
 
+export interface AddressRequest {
+    line_1: string;
+    line_2?: string;
+    line_3?: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    customerId: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class Addressservice {
     private http = inject(HttpClient);
@@ -17,5 +27,8 @@ export class Addressservice {
     }
     getByCustomerId(customerId: string) {
         return this.http.get<Address[]>(`${this.baseUrl}/customer/address/get-all/${customerId}`);
+    }
+    addAddress(request: AddressRequest) {
+        return this.http.post<Address>(`${this.baseUrl}/customer/address/add`, request);
     }
 }

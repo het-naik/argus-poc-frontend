@@ -66,12 +66,12 @@
       <mat-card appearance="outlined" class="option-card">
         <h2 class="card-title">Delivery Address</h2>
 
-        @if (!addresses().length) {
-        <p class="muted">You have no saved addresses.</p>
-        <a mat-stroked-button routerLink="/addresses">
-          <mat-icon>add</mat-icon> Add address
-        </a>
-        } @else {
+      @if (!addresses().length) {
+<p class="muted">You have no saved addresses.</p>
+<button mat-stroked-button type="button" (click)="openAddAddress()">
+  <mat-icon>add</mat-icon> Add address
+</button>
+} @else {
         <mat-radio-group class="address-list" [value]="selectedAddressId()"
           (change)="selectedAddressId.set($event.value)">
           @for (a of addresses(); track a.addressId) {
