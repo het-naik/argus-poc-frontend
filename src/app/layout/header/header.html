@@ -2,9 +2,7 @@
 
   <nav class="nav-links">
     <a mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-    @if(showOrdersLink()) {
-      <a mat-button routerLink="/orders" routerLinkActive="active-link">Orders</a>
-    }
+    <a mat-button routerLink="/orders" routerLinkActive="active-link">Orders</a>
     @if(showDashboardLink()) {
       <a mat-button [routerLink]="dashboardRoute()" routerLinkActive="active-link">Dashboard</a>
     }
