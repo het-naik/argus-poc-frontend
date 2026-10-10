@@ -24,7 +24,7 @@ export class Header {
 
   showOrdersLink = computed(() => {
     const role = this.authService.getUser().role;
-    return (role === RoleType.CUSTOMER);
+    return (role === RoleType.CUSTOMER || role === RoleType.SELLER);
   });
 
   dashboardRoute = computed(() => {

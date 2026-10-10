@@ -46,6 +46,7 @@ export interface CartItem{
     productName:string;
     quantity:number;
     pricePerUnit:number;
+    stock:number;
 }
 export interface AppUser {
   id: string; 
