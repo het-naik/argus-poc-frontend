@@ -31,7 +31,7 @@
       <!-- Sort By -->
       <div class="filter-block">
         <span class="filter-title">Sort By</span>
-        <mat-radio-group class="filter-options" [(ngModel)]="selectedSort">
+        <mat-radio-group class="filter-options" [(ngModel)]="selectedSort" (ngModelChange)="onSortChange()">
           <mat-radio-button *ngFor="let option of sortOptions" [value]="option.value">
             {{ option.label }}
           </mat-radio-button>
@@ -44,7 +44,7 @@
       <div class="filter-block">
         <span class="filter-title">Category</span>
         <div class="filter-options">
-          <mat-checkbox *ngFor="let category of categories" [(ngModel)]="category.checked">
+          <mat-checkbox *ngFor="let category of categories" [ngModel]="category.checked" (ngModelChange)="onCategoryChange(category, $event)">
             {{ category.label }}
           </mat-checkbox>
         </div>
@@ -58,13 +58,13 @@
 
         <div class="price-inputs">
           <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <input matInput type="number" [(ngModel)]="minPrice" name="minPrice" />
+            <input matInput type="number" [(ngModel)]="minPrice" name="minPrice" (change)="onPriceChange()" />
           </mat-form-field>
 
           <span class="price-separator">&ndash;</span>
 
           <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <input matInput type="number" [(ngModel)]="maxPrice" name="maxPrice" />
+            <input matInput type="number" [(ngModel)]="maxPrice" name="maxPrice" (change)="onPriceChange()" />
           </mat-form-field>
         </div>
 

@@ -18,7 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { Productservice } from '../productservice';
 import { Router } from '@angular/router';
-import { formatCategory, Product } from '../../../core/interfaces/product';
+import { CATEGORY_LABELS, CategoryType, formatCategory, Product } from '../../../core/interfaces/product';
 import { CartService } from '../../cart/cart.service';
 import { AuthService } from '../../auth/auth-service';
 import { RoleType } from '../../../core/interfaces/user';
@@ -26,11 +26,12 @@ import { RoleType } from '../../../core/interfaces/user';
 
 
 export interface CategoryFilter {
+  value : CategoryType;
   label : string;
   checked : boolean;
 }
 
-export type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'newest';
+export type SortOption = 'price-asc' | 'price-desc';
 
 
 @Component({
@@ -52,24 +53,20 @@ export class Productbrowsing implements OnInit {
 
   sortOptions : {value : SortOption, label : String}[] = [
     {value : 'price-asc', label : 'Price: Low to High'},
-    {value : 'price-desc', label : 'Price: High to Low'},
-    {value : 'newest', label : 'Newest arrival'},
+    {value : 'price-desc', label : 'Price: High to Low'}
   ];
 
   selectedSort : SortOption = 'price-asc';
 
-  categories : CategoryFilter[] = [
-    {label : 'Fashion & Apparel', checked : true},
-    {label : 'Electronics & Technology', checked : false},
-    {label : 'Home & Living', checked : false},
-    {label : 'Health, Beauty, & Personal Care', checked : false},
-    {label : 'Sports, Hobbies, & Leisure', checked : false},
-    {label : 'Essentials, Food, & Grocery', checked : false},
-  ];
+  categories : CategoryFilter[] = Object.values(CategoryType).map(type => ({
+    value : type,
+    label : CATEGORY_LABELS[type],
+    checked : false,
+  }));
 
   minPrice = 0;
   maxPrice = 5000;
-  priceRangeLimit = 1000;
+  priceRangeLimit = 5000;
 
   inStockOnly = true;
   preOrderOnly = false;
@@ -95,7 +92,16 @@ export class Productbrowsing implements OnInit {
         console.log('API response: ', response);
         console.log('Products array: ', response.content);
         const term = this.searchTerm.trim().toLowerCase();
-        this.products = response.content.filter(p => p.stock > 0).filter(p => !term || p.name.toLowerCase().includes(term));
+        const selected = this.categories.filter(c => c.checked).map(c => c.value);
+        const min = this.minPrice ?? 0;
+        const max = this.maxPrice ?? Infinity;
+        const filtered = response.content.filter(p => p.stock > 0)
+        .filter(p => !term || p.name.toLowerCase().includes(term))
+        .filter(p => selected.length === 0 || selected.includes(p.categoryType))
+        .filter(p => p.pricePerUnit >= min && p.pricePerUnit <= max);
+        this.products = filtered.sort((a, b) => 
+          this.selectedSort === 'price-asc' ? a.pricePerUnit - b.pricePerUnit : b.pricePerUnit - a.pricePerUnit
+        );
         this.totalItems = response.totalElements;
         this.isLoading = false;
         this.cdr.detectChanges();
@@ -107,6 +113,23 @@ export class Productbrowsing implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  onSortChange() {
+    this.pageIndex = 0;
+    this.fetchProducts();
+  }
+
+  onPriceChange() {
+    this.pageIndex = 0;
+    this.fetchProducts();
+    this.cdr.detectChanges();
+  }
+
+  onCategoryChange(category : CategoryFilter, checked : boolean) {
+    category.checked = checked;
+    this.pageIndex = 0;
+    this.fetchProducts();
   }
 
   onSearchChange(value : string) : void {
