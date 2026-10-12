@@ -24,11 +24,6 @@ export class Header {
     return (role === RoleType.SELLER || role === RoleType.ADMIN);
   });
 
-  // showOrdersLink = computed(() => {
-  //   const role = this.authService.getUser().role;
-  //   return (role === RoleType.CUSTOMER);
-  // });
-
   dashboardRoute = computed(() => {
     const role = this.authService.getUser().role;
     if (role === RoleType.SELLER) {

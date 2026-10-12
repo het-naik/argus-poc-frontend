@@ -40,12 +40,13 @@ export interface Cart {
   customerId: string;
   cartItems: CartItem[];
 }
-export interface CartItem {
-  id: string;
-  productId: number;
-  productName: string;
-  quantity: number;
-  pricePerUnit: number;
+export interface CartItem{
+    id:string;
+    productId:number;
+    productName:string;
+    quantity:number;
+    pricePerUnit:number;
+    stock:number;
 }
 export interface AppUser {
   id: string;

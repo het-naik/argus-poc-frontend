@@ -16,6 +16,7 @@ import { MatSelect, MatOption } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { AddAddressDialog } from './add-address-dialog/add-address-dialog';
+import { catchError, forkJoin, map, of } from 'rxjs';
 
 @Component({
   imports: [MatTableModule, MatRowDef, RouterLink, CurrencyPipe, MatHeaderCellDef, MatCellDef, MatHeaderRowDef, MatChip, MatCard, MatIconModule, MatRadioGroup, MatRadioButton, MatFormField, MatSelect, MatLabel, MatOption],
@@ -30,7 +31,8 @@ export class CartComponent implements OnInit {
   private cartService = inject(CartService)
   private addressService = inject(Addressservice);
   private orderService = inject(OrderService)
-
+  removedNotice = signal<string | null>(null);
+  
   addresses = signal<Address[]>([]);
   selectedAddressId = signal<string | null>(null);
   selectedPayment = signal<PaymentMethod | null>(null);
@@ -74,17 +76,42 @@ export class CartComponent implements OnInit {
         this.loadAddresses(customerId);
     }
   }
-  fetchDetails(customerId: string) {
-    console.log('Fetching cart for', customerId);
-    this.cartService.getCart(customerId).subscribe({
-      next: (data: Cart) => {
-        console.log('Cart response', data);
-        this.cart.set(data);
+fetchDetails(customerId: string) {
+  this.cartService.getCart(customerId).subscribe({
+    next: (data: Cart) => {
+      this.cart.set(data);
+      this.removeOutOfStockItems(data);
+    },
+    error: (err) => console.error('Cart error', err),
+  });
+}
 
-      },
-      error: (err) => console.error('Cart error', err),
-    });
-  }
+private removeOutOfStockItems(cart: Cart) {
+  const outOfStock = cart.cartItems.filter(i => i.stock <= 0);
+  if (!outOfStock.length) return;
+
+  // each call handles its own error so one failure doesn't cancel the rest
+  forkJoin(
+    outOfStock.map(item =>
+      this.cartService.removeItem(this.customerId, item.productId).pipe(
+        map(() => ({ item, removed: true })),
+        catchError(() => of({ item, removed: false }))
+      )
+    )
+  ).subscribe(results => {
+    const removed = results.filter(r => r.removed).map(r => r.item);
+    if (!removed.length) return;
+
+    const ids = new Set(removed.map(i => i.productId));
+    this.cart.update(c =>
+      c ? { ...c, cartItems: c.cartItems.filter(i => !ids.has(i.productId)) } : c
+    );
+
+    this.removedNotice.set(
+      `Removed from your cart (out of stock): ${removed.map(i => i.productName).join(', ')}`
+    );
+  });
+}
 
   removeItem(item: CartItem) {
     if (!confirm('Remove this item from your cart?')) return;
