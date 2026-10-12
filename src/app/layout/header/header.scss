@@ -1,3 +1,8 @@
+$header-bg: #e3f2fd;
+$border-color: #bbdefb;
+$text-color: #0d2b4a;
+$accent: #1565c0;
+
 .app-toolbar {
   display: flex;
   align-items: center;
@@ -5,6 +10,14 @@
   position: sticky;
   top: 0;
   z-index: 100;
+
+  --mat-toolbar-container-background-color: #{$header-bg};
+  --mat-toolbar-container-text-color: #{$text-color};
+
+  background: $header-bg;
+  color: $text-color;
+  border-bottom: 1px solid $border-color;
+  box-shadow: 0 2px 6px rgba(21, 101, 192, 0.12);
 }
 
 .nav-links {
@@ -15,6 +28,7 @@
 .nav-links a.active-link {
   font-weight: 700;
   text-decoration: underline;
+  color: $accent;
 }
 
 .spacer {

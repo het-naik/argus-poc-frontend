@@ -8,6 +8,7 @@ import { ProfileCard } from '../../../shared/components/profile-card/profile-car
 import { UserTable } from '../../../shared/components/user-table/user-table';
 import { UserService } from '../../../shared/services/user-service';
 import { AdminAnalytics } from '../admin-analytics/admin-analytics/admin-analytics';
+import { AuthService } from '../../auth/auth-service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -18,6 +19,7 @@ import { AdminAnalytics } from '../admin-analytics/admin-analytics/admin-analyti
 export class AdminDashboard implements OnInit {
   private readonly productService = inject(Productservice);
   private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
 
   products = signal<Product[]>([]);
   users = signal<User[]>([]);
@@ -29,7 +31,7 @@ export class AdminDashboard implements OnInit {
     });
 
     this.userService.getAllUsers().subscribe({
-      next: (page) => this.users.set(page.content),
+      next: (page) => this.users.set(page.content.filter(n => n.id != this.authService.getUser().id)),
       error: (err) => console.error('Error fetching users', err),
     });
   }

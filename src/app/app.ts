@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { Header } from './layout/header/header';
 import { Footer } from './layout/footer/footer';
 
@@ -13,5 +13,11 @@ import { Footer } from './layout/footer/footer';
 })
 export class App {
   protected readonly title = signal('frontend');
+  private router = inject(Router);
+
+  showHeaderFooter() {
+    const url = this.router.url;
+    return (!url.startsWith('/login') && !url.startsWith('/register'));
+  }
 }
 

@@ -15,16 +15,13 @@ import { RoleType } from '../../core/interfaces/user';
 })
 export class Header {
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService) {
+    console.log('User Role:', this.authService.role());
+   }
 
   showDashboardLink = computed(() => {
     const role = this.authService.getUser().role;
     return (role === RoleType.SELLER || role === RoleType.ADMIN);
-  });
-
-  showOrdersLink = computed(() => {
-    const role = this.authService.getUser().role;
-    return (role === RoleType.CUSTOMER || role === RoleType.SELLER);
   });
 
   dashboardRoute = computed(() => {
@@ -37,6 +34,7 @@ export class Header {
     }
     return '/';
   });
+  
   logout() {
     this.router.navigate(['/login']).then(() => this.authService.logout());
   }
